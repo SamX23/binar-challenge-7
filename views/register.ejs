@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A landing page games" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/icon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/icon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/icon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/assets/icon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="/assets/icon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="apple-mobile-web-app-title" content="Simple Javascript Games" />
+    <meta name="application-name" content="Simple Javascript Games" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/styles/style.css" rel="stylesheet" />
+  </head>
+  <body id="login-form">
+    <div class="form-signin d-flex h-100">
+      <div class="bg-dark m-auto px-5 py-5 rounded-3">
+        <h1 class="text-white">Register to play</h1>
+        <form class="my-5" method="post" action="/register">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control <% if (userExist) { %> is-invalid <% } %>"
+              id="username"
+              name="username"
+              placeholder="yourusername"
+              pattern="[a-z0-9-_\.]+"
+              minlength="4"
+              aria-describedby="nameHelp"
+              required
+            />
+            <label for="username">Username</label>
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+              Username exist, try another one.
+            </div>
+          </div>
+          <div id="nameHelp" class="form-text mb-2">
+            Use a unique usernames.
+          </div>
+
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              aria-describedby="passwordHelp"
+              placeholder="*******"
+              minlength="4"
+              required
+            />
+            <label for="password">Password</label>
+          </div>
+          <div id="passwordHelp" class="form-text mb-2">
+            Use a proper password and easy to remember.
+          </div>
+
+          <div class="py-2 d-flex justify-content-between">
+            <button class="btn btn-lg btn-primary" type="submit">
+              Register
+            </button>
+            <a class="btn btn-lg btn-secondary" href="/login">Login</a>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

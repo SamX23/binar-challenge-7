@@ -1,0 +1,71 @@
+<div
+  class="modal fade"
+  id="updateUserModal"
+  tabindex="-1"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Update Profile</h5>
+      </div>
+      <form id="updateForm" action="" method="POST">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>User Id:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="userId"
+              id="userIdLabel"
+              disabled
+            />
+          </div>
+          <div class="form-group">
+            <label>Full Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="full_name"
+              placeholder="your name"
+              autocomplete="off"
+              pattern="[a-z0-9-_\.]+"
+              minlength="4"
+            />
+          </div>
+          <div class="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              aria-describedby="passwordHelp"
+              autocomplete="off"
+              placeholder="my@email.com"
+              minlength="4"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <input
+              type="submit"
+              class="btn btn-primary"
+              value="Update"
+              disabled
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Update User</h5>
+      </div>
+      <form id="updateForm" action="" method="POST">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              placeholder="yourusername"
+              autocomplete="off"
+              pattern="[a-z0-9-_\.]+"
+              minlength="4"
+            />
+          </div>
+          <div class="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              aria-describedby="passwordHelp"
+              autocomplete="off"
+              placeholder="*******"
+              minlength="4"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <input type="submit" class="btn btn-primary" value="Update" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

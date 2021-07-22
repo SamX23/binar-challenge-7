@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "sami",
+    "password": "qweoiu@#23",
+    "database": "binar_challenge",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "sami",
+    "password": "qweoiu@#23",
+    "database": "database_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "sami",
+    "password": "qweoiu@#23",
+    "database": "binar_challenge",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
