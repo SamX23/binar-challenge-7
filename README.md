@@ -1,6 +1,6 @@
-# Binar-chapter-6
+# Binar Challenge Chapter 7 Fullstack Web
 
-### Enhance the html games by using :
+### Create a web app using MVC architecture by using these technology :
 
 - Express JS
 - EJS View Engine
