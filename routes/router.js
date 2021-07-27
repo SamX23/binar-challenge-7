@@ -1,5 +1,7 @@
 const express = require("express");
-const app = express();
+const router = express();
+
+router.use(express.Router());
 
 const home = require("./home");
 const games = require("./games");
@@ -8,11 +10,11 @@ const register = require("./register");
 const dashboard = require("./dashboard");
 const dashboardUser = require("./dashboard-user");
 
-app.use(home);
-app.use(games);
-app.use(login);
-app.use(register);
-app.use(dashboard);
-app.use(dashboardUser);
+router.use(home);
+router.use(games);
+router.use(login);
+router.use(register);
+router.use(dashboard);
+router.use(dashboardUser);
 
-module.exports = app;
+module.exports = router;

@@ -5,7 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
-const routes = require("./routes/routes");
+const router = require("./routes/router");
 const api = require("./routes/api");
 
 const app = express();
@@ -29,7 +29,7 @@ app.use(
   })
 );
 
-app.use(routes);
+app.use(router);
 app.use(api);
 
 app.use(function (req, res, next) {
