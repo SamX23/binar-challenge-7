@@ -7,8 +7,8 @@ const home = require("../controllers/homeController");
 const games = require("../controllers/gamesController");
 const login = require("../controllers/loginController");
 const register = require("../controllers/registerController");
+const dashboardUser = require("../controllers/dashboardUserController");
 const dashboard = require("./dashboard");
-const dashboardUser = require("./dashboard-user");
 
 router.get("/", home.index);
 router.get("/games", games.index);
@@ -18,6 +18,6 @@ router.get("/register", register.index);
 router.post("/register", register.register);
 
 router.use(dashboard);
-router.use(dashboardUser);
+router.get("/dashboard-user", dashboardUser.index);
 
 module.exports = router;
