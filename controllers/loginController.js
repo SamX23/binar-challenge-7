@@ -3,7 +3,11 @@ const bcrypt = require("bcrypt");
 
 module.exports = {
   index: (req, res, next) =>
-    res.render("login", { title: "Login Page", msg: req.query.msg }),
+    res.render("login", {
+      title: "Login Page",
+      msg: req.query.msg,
+      style: "style",
+    }),
   auth: (req, res, next) =>
     User_game.findOne({
       where: {

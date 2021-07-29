@@ -32,6 +32,8 @@
   <meta name="msapplication-TileColor" content="#da532c" />
   <meta name="theme-color" content="#ffffff" />
   <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/styles/responsive.css" rel="stylesheet" />
-  <link href="/styles/style.css" rel="stylesheet" />
+  <link
+    href="/styles/<% if(style) { %> <%= style %> <% } else { %>style<% } %>.css"
+    rel="stylesheet"
+  />
 </head>
