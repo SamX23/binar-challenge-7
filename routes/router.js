@@ -10,14 +10,17 @@ const register = require("../controllers/registerController");
 const dashboardUser = require("../controllers/dashboardUserController");
 const dashboard = require("./dashboard");
 
+// GET METHOD
 router.get("/", home.index);
 router.get("/games", games.index);
 router.get("/login", login.index);
 router.get("/login/auth", login.auth);
 router.get("/register", register.index);
-router.post("/register", register.register);
+router.get("/dashboard-user", dashboardUser.index);
+
+// POST METHOD
+router.post("/register/auth", register.register);
 
 router.use(dashboard);
-router.get("/dashboard-user", dashboardUser.index);
 
 module.exports = router;
