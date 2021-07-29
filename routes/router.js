@@ -27,6 +27,4 @@ router.post("/dashboard/delete/:id", dashboard.delete);
 router.post("/register/auth", register.register);
 // router.post("/dashboard-user", dashboardUser.update);
 
-router.use(dashboard);
-
 module.exports = router;
