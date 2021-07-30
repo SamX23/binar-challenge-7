@@ -3,5 +3,6 @@ module.exports = {
     res.render("games", {
       title: "Try Out The Games",
       name: req.query.user,
+      style: "games",
     }),
 };

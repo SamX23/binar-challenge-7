@@ -15,6 +15,7 @@ module.exports = {
       }).then((user) =>
         res.status(200).render("dashboard", {
           title: "Dashboard Page",
+          style: "dashboard",
           user,
           msg: msg,
         })
