@@ -36,7 +36,7 @@
             >
           </li>
         </ul>
-        <ul class="navbar-nav mb-lg-0 d-flex">
+        <ul class="navbar-nav mb-lg-0 d-flex align-items-sm-center">
           <% if (name) { %>
           <li class="nav-item">
             <a
@@ -47,12 +47,13 @@
               <% } else {%>
               href="/dashboard-user?user=<%= name %>"
               <% } %>
-              ><%= name %></a
-            >
+              >
+              <%= name %>
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-uppercase" aria-current="page" href="/"
-              >logout</a
+            <a class="nav-link text-uppercase d-flex" aria-current="page" href="/"
+              ><ion-icon name="log-out-outline" size="large"></ion-icon></a
             >
           </li>
           <% } else { %>
@@ -62,7 +63,9 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/login">LOGIN</a>
+            <a class="nav-link d-flex" aria-current="page" href="/login">
+              <ion-icon name="log-in-outline" size="large"></ion-icon>
+            </a>
           </li>
           <% } %>
         </ul>
