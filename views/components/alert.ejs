@@ -28,6 +28,6 @@
   const alert = document.querySelector(".alert");
 
   setTimeout(() => {
-    alert.style.display = "none";
+    alert ? (alert.style.display = "none") : null;
   }, 2000);
 </script>
