@@ -18,12 +18,6 @@ for (let i = 0; i < deleteButton.length; i++) {
   };
 }
 
-const alert = document.querySelector(".alert");
-
-setTimeout(() => {
-  alert.style.display = "none";
-}, 2000);
-
 // Dashboard-user
 const editProfileButton = document.querySelector(".editProfileButton");
 const updateUserModal = document.getElementById("updateUserModal");

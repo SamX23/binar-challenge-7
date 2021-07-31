@@ -1,0 +1,33 @@
+<% if(msg == 'error') { %>
+<div class="alert alert-danger" role="alert">Oops! please try again</div>
+<% } %> <% if(msg == 'exist') { %>
+<div class="alert alert-danger" role="alert">Item exist !</div>
+<% } %> <% if(msg == 'created') { %>
+<div class="alert alert-success" role="alert">Successfully Created !</div>
+<% } %> <% if(msg == 'updated') { %>
+<div class="alert alert-success" role="alert">Successfully Updated !</div>
+<% } %> <% if(msg == 'deleted') { %>
+<div class="alert alert-success" role="alert">Successfully Deleted !</div>
+<% } %> <% if(msg == 'login') { %>
+<div class="alert alert-success" role="alert">Logged In!</div>
+<% } %>
+
+<style>
+  .alert {
+    position: absolute;
+    width: 18rem;
+    right: 2rem;
+    bottom: 2rem;
+    margin: auto;
+    text-align: center;
+    z-index: 99;
+  }
+</style>
+
+<script>
+  const alert = document.querySelector(".alert");
+
+  setTimeout(() => {
+    alert.style.display = "none";
+  }, 2000);
+</script>

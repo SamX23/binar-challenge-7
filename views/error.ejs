@@ -1,20 +1,14 @@
-<html lang="en">
-  <%- include("components/head"); %>
-
-  <body
-    class="d-flex justify-content-center align-items-center bg-dark text-light"
-  >
-    <div class="container">
-      <div class="text-center">
-        <h1><%= error.status %></h1>
-        <p><%= message %></p>
-        <a class="btn btn-outline-primary text-decoration-none" href="/"
-          >Back to home</a
-        >
-      </div>
-      <div class="rounded bg-info text-dark p-4 my-5">
-        <pre><%= error.stack %></pre>
-      </div>
+<body class="bg-dark text-light">
+  <div class="container">
+    <div class="text-center">
+      <h1><%= error.status %></h1>
+      <p><%= message %></p>
+      <a class="btn btn-outline-primary text-decoration-none" href="/"
+        >Back to home</a
+      >
     </div>
-  </body>
-</html>
+    <div class="rounded bg-info text-dark p-4 my-5">
+      <pre><%= error.stack %></pre>
+    </div>
+  </div>
+</body>
