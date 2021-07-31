@@ -20,6 +20,7 @@ module.exports = {
               user,
               msg: msg,
               username: username,
+              style: "dashboard",
             })
           )
         : res.status(200).redirect("/");

@@ -10,7 +10,7 @@ module.exports = {
     res.render("register", {
       title: "Register Page",
       userExist: req.query.msg,
-      style: "style",
+      style: "login",
     }),
 
   register: async (req, res) => {
