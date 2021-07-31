@@ -4,12 +4,14 @@ const path = require("path");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const expressLayouts = require("express-ejs-layouts");
 
 const router = require("./routes/router");
 const api = require("./routes/api");
 
 const app = express();
-
+app.use(expressLayouts);
+app.set("layout", "./layout");
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
