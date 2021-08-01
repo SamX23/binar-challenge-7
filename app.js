@@ -1,15 +1,15 @@
-const createError = require("http-errors");
 const express = require("express");
-const path = require("path");
+const app = express();
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
 const expressLayouts = require("express-ejs-layouts");
+const cookieParser = require("cookie-parser");
+const createError = require("http-errors");
+const path = require("path");
+const logger = require("morgan");
 
 const router = require("./routes/");
 const api = require("./routes/api");
 
-const app = express();
 app.use(expressLayouts);
 app.set("layout", "./layout");
 app.set("views", path.join(__dirname, "views"));
@@ -34,10 +34,7 @@ app.use(
 app.use(router);
 app.use(api);
 
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
+app.use((req, res, next) => next(createError(404)));
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
