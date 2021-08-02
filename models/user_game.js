@@ -1,6 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
 
+const bcrypt = require("bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   class User_game extends Model {
     /**
@@ -17,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
       });
     }
+    static #encrypt = (password) => bcrypt.hashSync(password, 10);
+    static register = ({ username, password }) => {
+      const encryptedPassword = this.#encrypt(password);
+      return this.create({ username, password: encryptedPassword });
+    };
   }
   User_game.init(
     {
