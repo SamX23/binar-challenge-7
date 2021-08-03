@@ -12,7 +12,7 @@ module.exports = {
       style: "login",
     }),
 
-  register: (req, res, next) => {
+  auth: (req, res, next) => {
     User_game.register(req.body)
       .then((user_game) => {
         User_game_biodata.create({
