@@ -13,9 +13,9 @@ router.get("/register", controller.register.index);
 router.get("/dashboard", controller.dashboard.index);
 router.get("/dashboard/*", controller.dashboard.handler);
 router.get("/dashboard-user", controller.dashboardUser.index);
-router.get("/auth/login", controller.login.auth);
 
 // POST METHOD
+router.post("/auth/login", controller.login.auth);
 router.post("/auth/register", controller.register.auth);
 router.post("/dashboard/add", controller.dashboard.create);
 router.post("/dashboard/edit/:id", controller.dashboard.update);

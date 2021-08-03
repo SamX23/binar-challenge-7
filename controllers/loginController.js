@@ -9,19 +9,9 @@ module.exports = {
       style: "login",
     }),
   auth: (req, res, next) =>
-    User_game.findOne({
-      where: {
-        username: req.query.username,
-      },
-    })
-      .then(async (user) => {
-        if (user.username != "admin") {
-          (await bcrypt.compare(req.query.password, user.password))
-            ? res.status(200).redirect("/?msg=login&user=" + user.username)
-            : res.status(400).redirect("/login?msg=passwordwrong");
-        } else {
-          res.status(200).redirect("/?msg=login&user=" + user.username);
-        }
-      })
-      .catch((err) => res.status(400).redirect("/login?msg=usernamewrong")),
+    User_game.authenticate(req.body)
+      .then((user) =>
+        res.status(200).redirect("/?msg=login&user=" + user.username)
+      )
+      .catch((err) => res.status(400).redirect("/login?msg=" + err)),
 };

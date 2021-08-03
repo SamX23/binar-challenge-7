@@ -5,13 +5,7 @@ const bcrypt = require("bcrypt");
 
 module.exports = (sequelize, DataTypes) => {
   class User_game extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       User_game.hasMany(models.User_game_biodata, {
         foreignKey: "user_id",
       });
@@ -23,6 +17,20 @@ module.exports = (sequelize, DataTypes) => {
     static register = ({ username, password }) => {
       const encryptedPassword = this.#encrypt(password);
       return this.create({ username, password: encryptedPassword });
+    };
+
+    checkPassword = (password) => bcrypt.compareSync(password, this.password);
+
+    static authenticate = async ({ username, password }) => {
+      try {
+        const user = await this.findOne({ where: { username } });
+        if (!user) return Promise.reject("notfound");
+        const isPasswordValid = user.checkPassword(password);
+        if (!isPasswordValid) return Promise.reject("passwordwrong");
+        return Promise.resolve(user);
+      } catch (err) {
+        return Promise.reject(err);
+      }
     };
   }
   User_game.init(
