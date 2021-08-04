@@ -4,6 +4,7 @@ const {
   User_game,
   User_game_biodata,
   User_game_history,
+  Game,
 } = require("../models");
 
 /**
@@ -241,6 +242,21 @@ app.delete("/v2/users/delete/:id", (req, res) =>
       })
     )
     .catch(() => res.status(422).send("Cannot delete the user id"))
+);
+
+app.get("/v2/games", (req, res) =>
+  Game.findAll({
+    order: [["id", "ASC"]],
+  }).then((game) => res.status(200).send(game))
+);
+
+app.post("/v2/games", (req, res) =>
+  Game.create({
+    player_one: req.body.player_one,
+    player_two: req.body.player_two,
+    result: req.body.result,
+    times: req.body.times,
+  }).then((game) => res.status(200).send(game))
 );
 
 module.exports = app;
