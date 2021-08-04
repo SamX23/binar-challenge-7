@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       win: DataTypes.INTEGER,
       lose: DataTypes.INTEGER,
+      score: DataTypes.INTEGER,
     },
     {
       sequelize,

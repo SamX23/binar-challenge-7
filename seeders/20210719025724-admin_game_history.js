@@ -18,6 +18,7 @@ module.exports = {
           user_id: 1,
           win: 0,
           lose: 0,
+          score: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
