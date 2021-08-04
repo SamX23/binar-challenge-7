@@ -2,7 +2,7 @@ const home = require("./homeController");
 const games = require("./gamesController");
 const login = require("./loginController");
 const register = require("./registerController");
-const dashboardUser = require("./dashboardUserController");
+const profileController = require("./profileController");
 const dashboard = require("./dashboardController");
 
 module.exports = {
@@ -11,5 +11,5 @@ module.exports = {
   login,
   register,
   dashboard,
-  dashboardUser,
+  profileController,
 };
