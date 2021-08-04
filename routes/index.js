@@ -13,6 +13,7 @@ router.get("/register", controller.register.index);
 router.get("/dashboard", controller.dashboard.index);
 router.get("/dashboard/*", controller.dashboard.handler);
 router.get("/profile", controller.profileController.index);
+router.get("/history", controller.gameHistory.index);
 
 // POST METHOD
 router.post("/auth/login", controller.login.auth);
