@@ -38,8 +38,8 @@ API can be accessed from such endpoints:
 - Edit a user : PUT <code>/v2/users/edit/:id</code>
 - Delete a user : DELETE <code>/v2/users/delete/:id</code>
 
+- Get games history : GET <code>/v2/games</code>
+
 ### CHORE
 
 - Send update on user profile table
-- Send something after games finished
-- Add history dashboard
