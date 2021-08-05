@@ -4,6 +4,8 @@ class Player {
     this.batu = document.getElementsByClassName("batu");
     this.kertas = document.getElementsByClassName("kertas");
     this.gunting = document.getElementsByClassName("gunting");
+    this.score = [];
+    this.choice;
   }
 }
 
@@ -14,8 +16,8 @@ const Computer = (Base) =>
 
 // Inheritance
 class Player_1 extends Player {
-  constructor(batu, kertas, gunting) {
-    super(batu, kertas, gunting);
+  constructor(batu, kertas, gunting, score, choice) {
+    super(batu, kertas, gunting, score, choice);
     this.#initiation();
   }
 
@@ -29,8 +31,8 @@ class Player_1 extends Player {
 
 // Polymorphism
 class Player_2 extends Computer(Player) {
-  constructor(batu, kertas, gunting) {
-    super(batu, kertas, gunting);
+  constructor(batu, kertas, gunting, score, choice) {
+    super(batu, kertas, gunting, score, choice);
     this.#initiation();
   }
 
@@ -45,8 +47,7 @@ class Rules {
   constructor() {
     this.resultText = document.createElement("H1");
     this.resultContainer = document.getElementById("vs_result");
-    this.user_choice;
-    this.com_choice;
+    this.gamesResult = "Not decided yet!";
   }
 
   logger = (text) => {
@@ -61,20 +62,24 @@ class Rules {
     this.resultContainer.appendChild(this.resultText);
   };
 
-  _winResult = () => {
+  _playerOneWin = (player = "Player") => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "PLAYER WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.logger("Result : PLAYER Win, great ! :)");
+    this.gamesResult = `${player} Win`;
+    this.logger(`Result : ${player} Win, great ! :)`);
+    return this.gamesResult;
   };
 
-  _loseResult = () => {
+  _playerTwoWin = (player = "Com") => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "COM WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.logger("Result : COM Win, YOU lose :(");
+    this.gamesResult = `${player} Win`;
+    this.logger(`Result : ${player} Win, YOU lose :(`);
+    return this.gamesResult;
   };
 
   _drawResult = () => {
@@ -82,106 +87,108 @@ class Rules {
     this.resultContainer.classList.add("draw");
     this.resultText.innerHTML = "DRAW";
     this.resultContainer.appendChild(this.resultText);
+    this.gamesResult = `Draw`;
     this.logger("Result : Draw, GG !");
+    return this.gamesResult;
   };
 
-  decision = (userChoice, botChoice) => {
+  decision = (playerOne, playerTwo) => {
     if (
-      (userChoice === "batu" && botChoice === "batu") ||
-      (userChoice === "kertas" && botChoice === "kertas") ||
-      (userChoice === "gunting" && botChoice === "gunting")
+      (playerOne === "batu" && playerTwo === "batu") ||
+      (playerOne === "kertas" && playerTwo === "kertas") ||
+      (playerOne === "gunting" && playerTwo === "gunting")
     ) {
       return this._drawResult();
     } else if (
-      (userChoice === "batu" && botChoice === "gunting") ||
-      (userChoice === "kertas" && botChoice === "batu") ||
-      (userChoice === "gunting" && botChoice === "kertas")
+      (playerOne === "batu" && playerTwo === "gunting") ||
+      (playerOne === "kertas" && playerTwo === "batu") ||
+      (playerOne === "gunting" && playerTwo === "kertas")
     ) {
-      return this._winResult();
+      return this._playerOneWin();
     } else if (
-      (userChoice === "batu" && botChoice === "kertas") ||
-      (userChoice === "kertas" && botChoice === "gunting") ||
-      (userChoice === "gunting" && botChoice === "batu")
+      (playerOne === "batu" && playerTwo === "kertas") ||
+      (playerOne === "kertas" && playerTwo === "gunting") ||
+      (playerOne === "gunting" && playerTwo === "batu")
     ) {
-      return this._loseResult();
+      return this._playerTwoWin();
     }
   };
 }
 
 class Game extends Rules {
-  constructor(user_choice, com_choice) {
-    super(user_choice, com_choice);
+  constructor(gamesResult) {
+    super(gamesResult);
     this.resetResult = document.getElementById("reset");
     this.#initiation();
   }
 
   #initiation() {
-    this.user = new Player_1();
-    this.com = new Player_2();
+    this.p1 = new Player_1();
+    this.p2 = new Player_2();
     this._defaultState();
     this.resetButton();
   }
 
   getUserPick = (choice) => {
-    this.user_choice = choice;
-    this.logger(`Player choose: ${this.user_choice}`);
-    return this.user_choice;
+    this.p1.choice = choice;
+    this.logger(`Player choose: ${choice}`);
+    return this.p1.choice;
   };
 
   getComPick = (choice) => {
-    this.com_choice = choice;
-    this.logger(`Com choose: ${this.com_choice}`);
-    return this.com_choice;
+    this.p2.choice = choice;
+    this.logger(`Com choose: ${choice}`);
+    return this.p2.choice;
   };
 
-  setPlayerListener = () => {
-    this.user.batu[0].onclick = () => {
+  setPlayerOneListener = () => {
+    this.p1.batu[0].onclick = () => {
       this.getUserPick("batu");
-      this.user.batu[0].classList.add("active_choice");
-      this.user.kertas[0].classList.remove("active_choice");
-      this.user.gunting[0].classList.remove("active_choice");
+      this.p1.batu[0].classList.add("active_choice");
+      this.p1.kertas[0].classList.remove("active_choice");
+      this.p1.gunting[0].classList.remove("active_choice");
       this.removePlayerListener();
-      this.decideResult();
+      this.comDecideResult();
     };
 
-    this.user.kertas[0].onclick = () => {
+    this.p1.kertas[0].onclick = () => {
       this.getUserPick("kertas");
-      this.user.batu[0].classList.remove("active_choice");
-      this.user.kertas[0].classList.add("active_choice");
-      this.user.gunting[0].classList.remove("active_choice");
+      this.p1.batu[0].classList.remove("active_choice");
+      this.p1.kertas[0].classList.add("active_choice");
+      this.p1.gunting[0].classList.remove("active_choice");
       this.removePlayerListener();
-      this.decideResult();
+      this.comDecideResult();
     };
 
-    this.user.gunting[0].onclick = () => {
+    this.p1.gunting[0].onclick = () => {
       this.getUserPick("gunting");
-      this.user.batu[0].classList.remove("active_choice");
-      this.user.kertas[0].classList.remove("active_choice");
-      this.user.gunting[0].classList.add("active_choice");
+      this.p1.batu[0].classList.remove("active_choice");
+      this.p1.kertas[0].classList.remove("active_choice");
+      this.p1.gunting[0].classList.add("active_choice");
       this.removePlayerListener();
-      this.decideResult();
+      this.comDecideResult();
     };
   };
 
-  setComListener(choice) {
+  setPlayerTwoListener(choice) {
     switch (choice) {
       case "batu":
         this.getComPick("batu");
-        this.com.batu[1].classList.add("active_choice");
-        this.com.kertas[1].classList.remove("active_choice");
-        this.com.gunting[1].classList.remove("active_choice");
+        this.p2.batu[1].classList.add("active_choice");
+        this.p2.kertas[1].classList.remove("active_choice");
+        this.p2.gunting[1].classList.remove("active_choice");
         break;
       case "kertas":
         this.getComPick("kertas");
-        this.com.batu[1].classList.remove("active_choice");
-        this.com.kertas[1].classList.add("active_choice");
-        this.com.gunting[1].classList.remove("active_choice");
+        this.p2.batu[1].classList.remove("active_choice");
+        this.p2.kertas[1].classList.add("active_choice");
+        this.p2.gunting[1].classList.remove("active_choice");
         break;
       case "gunting":
         this.getComPick("gunting");
-        this.com.batu[1].classList.remove("active_choice");
-        this.com.kertas[1].classList.remove("active_choice");
-        this.com.gunting[1].classList.add("active_choice");
+        this.p2.batu[1].classList.remove("active_choice");
+        this.p2.kertas[1].classList.remove("active_choice");
+        this.p2.gunting[1].classList.add("active_choice");
         break;
       default:
         break;
@@ -195,27 +202,29 @@ class Game extends Rules {
   };
 
   result = () => {
-    setInterval(() => {
-      if (this.user_choice && this.com_choice) {
-        this.decision(this.user_choice, this.com_choice);
+    setTimeout(() => {
+      if (this.p1.choice && this.p2.choice) {
+        this.decision(this.p1.choice, this.p2.choice);
       }
-      this.user_choice = null;
-      this.com_choice = null;
+      this.p1.choice = null;
+      this.p2.choice = null;
+
+      console.log(game.gamesResult);
     }, 400);
   };
 
-  decideResult() {
-    switch (this.com.randomPick(3)) {
+  comDecideResult() {
+    switch (this.p2.randomPick(3)) {
       case 2:
-        this.setComListener("batu");
+        this.setPlayerTwoListener("batu");
         this.result();
         break;
       case 1:
-        this.setComListener("kertas");
+        this.setPlayerTwoListener("kertas");
         this.result();
         break;
       case 0:
-        this.setComListener("gunting");
+        this.setPlayerTwoListener("gunting");
         this.result();
         break;
       default:
@@ -236,12 +245,9 @@ class Game extends Rules {
 
   play() {
     this.logger("Lets play traditional games!");
-    this.setPlayerListener();
+    this.setPlayerOneListener();
   }
 }
-
-const game = new Game();
-game.play();
 
 class DateTimes {
   constructor() {
@@ -300,6 +306,8 @@ async function sendReq(method, url = "", data) {
 //   times: times.now(),
 // }).then((data) => console.log("Success : ", data));
 
+const game = new Game();
+game.play();
 /*
 --------------------------------------
   Bismillah lulus Binar Academy
