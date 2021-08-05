@@ -18,6 +18,7 @@ const Computer = (Base) =>
 class Player_1 extends Player {
   constructor(batu, kertas, gunting, score, choice) {
     super(batu, kertas, gunting, score, choice);
+    this.username;
     this.#initiation();
   }
 
@@ -33,6 +34,7 @@ class Player_1 extends Player {
 class Player_2 extends Computer(Player) {
   constructor(batu, kertas, gunting, score, choice) {
     super(batu, kertas, gunting, score, choice);
+    this.username;
     this.#initiation();
   }
 
@@ -62,23 +64,23 @@ class Rules {
     this.resultContainer.appendChild(this.resultText);
   };
 
-  _playerOneWin = (player = "Player") => {
+  _playerOneWin = (username) => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "PLAYER WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.gamesResult = `${player} Win`;
-    this.logger(`Result : ${player} Win, great ! :)`);
+    this.gamesResult = `${username} Win`;
+    this.logger(`Result : ${username} Win, great ! :)`);
     return this.gamesResult;
   };
 
-  _playerTwoWin = (player = "Com") => {
+  _playerTwoWin = (username) => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "COM WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.gamesResult = `${player} Win`;
-    this.logger(`Result : ${player} Win, YOU lose :(`);
+    this.gamesResult = `${username} Win`;
+    this.logger(`Result : ${username} Win, awesome ! :)`);
     return this.gamesResult;
   };
 
@@ -93,24 +95,32 @@ class Rules {
   };
 
   decision = (playerOne, playerTwo) => {
+    const p1_batu = playerOne.choice === "batu";
+    const p1_kertas = playerOne.choice === "kertas";
+    const p1_gunting = playerOne.choice === "gunting";
+
+    const p2_batu = playerTwo.choice === "batu";
+    const p2_kertas = playerTwo.choice === "kertas";
+    const p2_gunting = playerTwo.choice === "gunting";
+
     if (
-      (playerOne === "batu" && playerTwo === "batu") ||
-      (playerOne === "kertas" && playerTwo === "kertas") ||
-      (playerOne === "gunting" && playerTwo === "gunting")
+      (p1_batu && p2_batu) ||
+      (p1_kertas && p2_kertas) ||
+      (p1_gunting && p2_gunting)
     ) {
       return this._drawResult();
     } else if (
-      (playerOne === "batu" && playerTwo === "gunting") ||
-      (playerOne === "kertas" && playerTwo === "batu") ||
-      (playerOne === "gunting" && playerTwo === "kertas")
+      (p1_batu && p2_gunting) ||
+      (p1_kertas && p2_batu) ||
+      (p1_gunting && p2_kertas)
     ) {
-      return this._playerOneWin();
+      return this._playerOneWin(playerOne.username);
     } else if (
-      (playerOne === "batu" && playerTwo === "kertas") ||
-      (playerOne === "kertas" && playerTwo === "gunting") ||
-      (playerOne === "gunting" && playerTwo === "batu")
+      (p1_batu && p2_kertas) ||
+      (p1_kertas && p2_gunting) ||
+      (p1_gunting && p2_batu)
     ) {
-      return this._playerTwoWin();
+      return this._playerTwoWin(playerTwo.username);
     }
   };
 }
@@ -125,6 +135,8 @@ class Game extends Rules {
   #initiation() {
     this.p1 = new Player_1();
     this.p2 = new Player_2();
+    this.p1.username = "Player 1";
+    this.p2.username = "Player 2";
     this._defaultState();
     this.resetButton();
   }
@@ -201,18 +213,6 @@ class Game extends Rules {
     document.getElementsByClassName("gunting")[0].disabled = true;
   };
 
-  result = () => {
-    setTimeout(() => {
-      if (this.p1.choice && this.p2.choice) {
-        this.decision(this.p1.choice, this.p2.choice);
-      }
-      this.p1.choice = null;
-      this.p2.choice = null;
-
-      console.log(game.gamesResult);
-    }, 400);
-  };
-
   comDecideResult() {
     switch (this.p2.randomPick(3)) {
       case 2:
@@ -247,6 +247,23 @@ class Game extends Rules {
     this.logger("Lets play traditional games!");
     this.setPlayerOneListener();
   }
+
+  result = () => {
+    setTimeout(() => {
+      if (this.p1 && this.p2) {
+        this.decision(this.p1, this.p2);
+      }
+      this.p1.choice = null;
+      this.p2.choice = null;
+
+      sendReq("POST", gameHistory, {
+        player_one: this.p1.username,
+        player_two: this.p2.username,
+        result: this.gamesResult,
+        times: times.now(),
+      });
+    }, 400);
+  };
 }
 
 class DateTimes {
@@ -298,13 +315,6 @@ async function sendReq(method, url = "", data) {
   });
   return response.json();
 }
-
-// sendReq("POST", gameHistory, {
-//   player_one: "sami",
-//   player_two: "com",
-//   result: "sami win",
-//   times: times.now(),
-// }).then((data) => console.log("Success : ", data));
 
 const game = new Game();
 game.play();
