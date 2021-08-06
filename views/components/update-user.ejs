@@ -10,7 +10,11 @@
       <div class="modal-header">
         <h5 class="modal-title" id="updateModalLabel">Update Profile</h5>
       </div>
-      <form id="updateForm" action="" method="POST">
+      <form
+        id="updateForm"
+        action="/profile/update?user=<%= username %>"
+        method="POST"
+      >
         <div class="modal-body">
           <div class="form-group">
             <label>User Id:</label>
@@ -19,6 +23,7 @@
               class="form-control"
               name="userId"
               id="userIdLabel"
+              value="<%= user.user_id %>"
               readonly
             />
           </div>
@@ -57,12 +62,7 @@
             >
               Close
             </button>
-            <input
-              type="submit"
-              class="btn btn-primary"
-              value="Update"
-              disabled
-            />
+            <input type="submit" class="btn btn-primary" value="Update" />
           </div>
         </div>
       </form>

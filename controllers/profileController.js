@@ -15,8 +15,8 @@ module.exports = {
               user_id: result.get("id"),
             },
           }).then((user) =>
-            res.status(200).render("dashboard-user", {
-              title: "Dashboard User",
+            res.status(200).render("profile", {
+              title: "My Profile",
               user,
               msg: msg,
               username: username,
@@ -26,37 +26,31 @@ module.exports = {
         : res.status(200).redirect("/");
     });
   },
-  update: async (req, res) => {
-    const fullname = req.body.fullname;
+  update: async (req, res, next) => {
+    const full_name = req.body.full_name;
     const email = req.body.email;
     const userId = req.body.userId;
 
-    const userData = {
-      fullname: fullname,
-      email: email,
-    };
-
     const updateData = async (data) =>
       await User_game_biodata.update(data, { where: { user_id: userId } })
-        .then(() => {
-          res.status(201).redirect(`/dashboard-user?user=${user}&msg=updated`);
-        })
-        .catch((err) => res.status(422).send("Cannot update user: ", err));
+        .then(() =>
+          res
+            .status(201)
+            .redirect("/profile?msg=updated&user=" + req.query.user)
+        )
+        .catch((err) => res.status(422).next("Cannot update user: ", err));
 
-    if (fullname != "" && email != "") {
-      findUsername(fullname).then((dbUser) => {
-        !dbUser
-          ? updateData(userData)
-          : res.redirect(`/dashboard-user?user=${user}&msg=error`);
+    if (full_name != "" && email != "") {
+      updateData({
+        full_name: full_name,
+        email: email,
       });
-    } else if (fullname != "" && email == "") {
-      findUsername(fullname).then((dbUser) => {
-        !dbUser
-          ? updateData({ fullname: fullname })
-          : res.redirect(`/dashboard-user?user=${user}&msg=error`);
-      });
-    } else if (fullname == "" && email != "") {
+    } else if (full_name != "" && email == "") {
+      updateData({ full_name: full_name });
+    } else if (full_name == "" && email != "") {
       updateData({ email: email });
+    } else {
+      res.status(201).redirect("/profile?user=" + req.query.user);
     }
   },
 };

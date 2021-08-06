@@ -42,4 +42,4 @@ API can be accessed from such endpoints:
 
 ### CHORE
 
-- Send update on user profile table
+- Send update to user history table afte games
