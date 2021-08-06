@@ -29,6 +29,7 @@
                 <th>Player One</th>
                 <th>Player Two</th>
                 <th>Result</th>
+                <th>Room</th>
                 <th>Times</th>
               </tr>
             </thead>
@@ -39,11 +40,12 @@
                 <th><%= item.player_one %></th>
                 <th><%= item.player_two %></th>
                 <th><%= item.result %></th>
+                <th><%= item.room %></th>
                 <th><%= item.times %></th>
               </tr>
               <% }) %> <% } else { %>
               <tr>
-                <th class="text-center" colspan="5">Data still empty</th>
+                <th class="text-center" colspan="6">Data still empty</th>
               </tr>
               <% } %>
             </tbody>
