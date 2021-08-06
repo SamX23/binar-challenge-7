@@ -1,0 +1,54 @@
+<div
+  class="modal fade"
+  id="createGame"
+  tabindex="-1"
+  aria-labelledby="createGameLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createGameLabel">Create Games Room</h5>
+      </div>
+      <form action="/create/game" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Your username:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              value="<%= name %>"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Room id:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="room"
+              placeholder="yourroom"
+              autocomplete="off"
+              pattern="[a-z0-9-_\.]+"
+              minlength="4"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <input type="submit" class="btn btn-primary" value="Create" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

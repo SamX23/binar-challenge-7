@@ -89,17 +89,16 @@
       </div>
 
       <div class="hero_Button m-auto">
-        <button type="button" class="btn">
-          <a
-            href="
-          <% if (name) { %>
-            /games?user=<%= name %>
-          <% } else { %>
-            /login
-          <% } %>
-          "
-            >TRIAL</a
+        <button type="button" class="btn"
+        <% if (name) { %>
+          data-bs-toggle="modal"
+          data-bs-target="#createGame"
           >
+          <a href="#">CREATE ROOM</a>
+        <% } else { %>
+          >
+          <a href="/login">TRIAL</a>
+        <% } %>
         </button>
       </div>
     </div>
@@ -554,3 +553,4 @@
 <!-- End of Footer -->
 
 <%- include("components/alert"); %>
+<%- include("components/createRoom.ejs"); %>
