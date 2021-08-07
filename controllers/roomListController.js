@@ -7,6 +7,7 @@ module.exports = {
       res.status(200).render("roomList", {
         title: "Room List",
         style: "dashboard",
+        name: req.query.user,
         game,
       })
     ),
