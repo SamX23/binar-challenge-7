@@ -5,7 +5,7 @@ module.exports = {
       order: [["id", "ASC"]],
     }).then((game) =>
       res.status(200).render("gameHistory", {
-        title: "Dashboard Page",
+        title: "Games History",
         style: "dashboard",
         game,
       })
