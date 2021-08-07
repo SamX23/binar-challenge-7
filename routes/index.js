@@ -3,7 +3,10 @@ const router = express();
 const restrict = require("../middleware/restrict");
 const controller = require("../controllers");
 const passport = require("../lib/passport");
-const login = passport.authenticate("local");
+const login = passport.authenticate("local", {
+  failureRedirect: "/login?msg=notfound",
+  failureFlash: true,
+});
 
 router.use(express.Router());
 
