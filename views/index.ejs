@@ -21,46 +21,51 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#">HOME</a>
           </li>
+          <% if (name) { %>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">WORK</a>
+            <a class="nav-link" aria-current="page"
+              <% if (name == "admin") { %>
+                href="/dashboard?user=<%= name %>"
+                >
+                DASHBOARD
+              <% } else { %>
+                href="/profile?user=<%= name %>"
+                >
+                PROFILE
+              <% } %>
+            </a>
           </li>
+          <% } %>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">CONTACT</a>
+            <a class="nav-link" aria-current="page" href="/history">HISTORY</a>
           </li>
           <li class="nav-item">
             <a
               class="nav-link"
               aria-current="page"
               href="http://kalamallah.xyz/"
-              >ABOUT ME</a
+              >ABOUT DEVELOPER</a
             >
           </li>
         </ul>
         <ul class="navbar-nav mb-lg-0 d-flex align-items-sm-center">
           <% if (name) { %>
           <li class="nav-item">
-            <a
-              class="nav-link text-uppercase"
-              aria-current="page"
-              <% if (name == "admin") { %>
-              href="/dashboard?user=<%= name %>"
-              <% } else {%>
-              href="/profile?user=<%= name %>"
-              <% } %>
-              >
+            <a class="nav-link text-uppercase" aria-current="page" href="#">
               <%= name %>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-uppercase d-flex" aria-current="page" href="/"
-              ><ion-icon name="log-out-outline" size="large"></ion-icon></a
-            >
+            <a
+              class="nav-link text-uppercase d-flex"
+              aria-current="page"
+              href="/"
+              ><ion-icon name="log-out-outline" size="large"></ion-icon
+            ></a>
           </li>
           <% } else { %>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/register"
-              >SIGN UP</a
-            >
+            <a class="nav-link" aria-current="page" href="/register">SIGN UP</a>
           </li>
           <li class="nav-item">
             <a class="nav-link d-flex" aria-current="page" href="/login">
@@ -89,16 +94,12 @@
       </div>
 
       <div class="hero_Button m-auto">
-        <button type="button" class="btn"
-        <% if (name) { %>
-          data-bs-toggle="modal"
-          data-bs-target="#createGame"
-          >
+        <button type="button" class="btn" <% if (name) { %>
+          data-bs-toggle="modal" data-bs-target="#createGame" >
           <a href="#">CREATE ROOM</a>
-        <% } else { %>
-          >
+          <% } else { %> >
           <a href="/login">TRIAL</a>
-        <% } %>
+          <% } %>
         </button>
       </div>
     </div>
@@ -112,10 +113,7 @@
   <!-- End of Hero Main Section -->
 
   <!-- About Sectuion -->
-  <div
-    id="about"
-    class="games_Section cover_Background cover_Shadow d-flex"
-  >
+  <div id="about" class="games_Section cover_Background cover_Shadow d-flex">
     <div class="container align-self-center">
       <div class="row m-auto games_Desc position-relative">
         <span class="position-absolute top-0 start-50 translate-middle p-0"
@@ -272,13 +270,7 @@
     <div class="container align-self-center">
       <div class="row m-auto position-relative">
         <span
-          class="
-            position-absolute
-            top-0
-            start-50
-            translate-middle
-            text-center
-          "
+          class="position-absolute top-0 start-50 translate-middle text-center"
           >Can My Computer Run This Game ?
         </span>
         <div class="col-6 requirements_SectionDetails">
@@ -292,17 +284,14 @@
                   <td class="br-right">
                     <div class="table_Content">
                       <h5>OS:</h5>
-                      <p>
-                        Windows 7 64-bit only (No OSX support at this time)
-                      </p>
+                      <p>Windows 7 64-bit only (No OSX support at this time)</p>
                     </div>
                   </td>
                   <td>
                     <div class="table_Content">
                       <h5>PROCESSOR:</h5>
                       <p>
-                        Intel Core 2 Duo @ 2.4 GHZ or AMD Athlon X2 @ 2.8
-                        GHZ
+                        Intel Core 2 Duo @ 2.4 GHZ or AMD Athlon X2 @ 2.8 GHZ
                       </p>
                     </div>
                   </td>
@@ -411,9 +400,7 @@
                   "The next big thing in the world of streaming and survival
                   games."
                 </p>
-                <h6 class="card-subtitle mb-2 text-muted">
-                  December 21, 2021
-                </h6>
+                <h6 class="card-subtitle mb-2 text-muted">December 21, 2021</h6>
               </div>
             </div>
           </div>
@@ -439,9 +426,7 @@
                   "Snoop Dogg playing the wildly entertaining 'SOS' is
                   ridiculous."
                 </p>
-                <h6 class="card-subtitle mb-2 text-muted">
-                  December 24, 2021
-                </h6>
+                <h6 class="card-subtitle mb-2 text-muted">December 24, 2021</h6>
               </div>
             </div>
           </div>
@@ -471,10 +456,10 @@
           <p>Want to stay in touch ?</p>
           <h2>NEWSLETTER SUBSCRIBE</h2>
           <p>
-            In order to start receiving our news, all you have to do is
-            enter your email address. Everything else will be taken care of
-            by us. We will send you emails containing information about
-            game. We don’t spam.
+            In order to start receiving our news, all you have to do is enter
+            your email address. Everything else will be taken care of by us. We
+            will send you emails containing information about game. We don’t
+            spam.
           </p>
         </div>
         <form class="row g-3 newsletter_Form">
@@ -552,5 +537,4 @@
 </footer>
 <!-- End of Footer -->
 
-<%- include("components/alert"); %>
-<%- include("components/createRoom.ejs"); %>
+<%- include("components/alert"); %> <%- include("components/createRoom.ejs"); %>

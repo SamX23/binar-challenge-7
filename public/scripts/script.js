@@ -18,7 +18,7 @@ const Computer = (Base) =>
 class Player_1 extends Player {
   constructor(batu, kertas, gunting, score, choice) {
     super(batu, kertas, gunting, score, choice);
-    this.username;
+    this.data;
     this.#initiation();
   }
 
@@ -34,7 +34,7 @@ class Player_1 extends Player {
 class Player_2 extends Computer(Player) {
   constructor(batu, kertas, gunting, score, choice) {
     super(batu, kertas, gunting, score, choice);
-    this.username;
+    this.data;
     this.#initiation();
   }
 
@@ -64,7 +64,7 @@ class Rules {
     this.resultContainer.appendChild(this.resultText);
   };
 
-  _playerOneWin = (username) => {
+  _playerOneWin = ({ username }) => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "PLAYER WIN";
@@ -74,7 +74,7 @@ class Rules {
     return this.gamesResult;
   };
 
-  _playerTwoWin = (username) => {
+  _playerTwoWin = ({ username }) => {
     this.resultContainer.classList.remove("draw");
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "COM WIN";
@@ -114,13 +114,13 @@ class Rules {
       (p1_kertas && p2_batu) ||
       (p1_gunting && p2_kertas)
     ) {
-      return this._playerOneWin(playerOne.username);
+      return this._playerOneWin(playerOne.data);
     } else if (
       (p1_batu && p2_kertas) ||
       (p1_kertas && p2_gunting) ||
       (p1_gunting && p2_batu)
     ) {
-      return this._playerTwoWin(playerTwo.username);
+      return this._playerTwoWin(playerTwo.data);
     }
   };
 }
@@ -129,14 +129,15 @@ class Game extends Rules {
   constructor(gamesResult) {
     super(gamesResult);
     this.resetResult = document.getElementById("reset");
+    this.id = document.querySelector("#game").dataset.id;
     this.#initiation();
   }
 
   #initiation() {
     this.p1 = new Player_1();
     this.p2 = new Player_2();
-    this.p1.username = "Player 1";
-    this.p2.username = "Player 2";
+    this.p1.data = document.querySelector("#player").dataset;
+    this.p2.data = document.querySelector("#player-2").dataset;
     this._defaultState();
     this.resetButton();
   }
@@ -256,12 +257,16 @@ class Game extends Rules {
       this.p1.choice = null;
       this.p2.choice = null;
 
-      sendReq("POST", gameHistory, {
-        player_one: this.p1.username,
-        player_two: this.p2.username,
-        result: this.gamesResult,
-        times: times.now(),
-      });
+      // sendReq("PUT", gameHistory(this.id), {
+      //   player_one: this.p1.data.username,
+      //   player_two: this.p2.data.username,
+      //   result: this.gamesResult,
+      //   times: times.now(),
+      // });
+
+      // sendReq("PUT", updateWin(this.p1.data.id));
+      // sendReq("PUT", updateLose(this.p1.data.id));
+      // sendReq("PUT", updateScore(this.p1.data.id));
     }, 400);
   };
 }
@@ -302,8 +307,13 @@ class DateTimes {
     } ${this.d.getFullYear()} - ${this.times()}`;
 }
 
+const SRC = window.location.origin;
 const times = new DateTimes();
-const gameHistory = "http://localhost:8080/v2/games";
+
+const gameHistory = (id) => `${SRC}/v2/games/${id}`;
+const updateWin = (id) => `${SRC}/v2/users/update/win/${id}`;
+const updateLose = (id) => `${SRC}/v2/users/update/lose/${id}`;
+const updateScore = (id) => `${SRC}/v2/users/update/score/${id}`;
 
 async function sendReq(method, url = "", data) {
   const response = await fetch(url, {
@@ -313,7 +323,7 @@ async function sendReq(method, url = "", data) {
     },
     body: JSON.stringify(data),
   });
-  return response.json();
+  return response;
 }
 
 const game = new Game();

@@ -2,7 +2,7 @@
 <header>
   <nav>
     <div class="back_button">
-      <a href="/?user=<%= name %>">
+      <a href="/?user=<%= player.username %>">
         <h2><</h2>
       </a>
     </div>
@@ -17,7 +17,9 @@
         />
       </div>
       <div class="title_text">
-        <h1 class="text-uppercase">Games Room : <%= roomId %></h1>
+        <h1 id="game" class="text-uppercase" data-id="<%= game.id %>">
+          Games Room : <%= game.room %>
+        </h1>
       </div>
     </div>
   </nav>
@@ -29,7 +31,13 @@
     <!-- Player section start -->
     <div class="player">
       <div class="user_title text-uppercase">
-        <h2><%= name %></h2>
+        <h2
+          id="player"
+          data-id="<%= player.id %>"
+          data-username="<%= player.username %>"
+        >
+          <%= player.username %>
+        </h2>
       </div>
       <div class="user_choice">
         <button class="choice batu">
@@ -72,7 +80,7 @@
     <!-- Com section start -->
     <div class="player">
       <div class="user_title">
-        <h2>COM</h2>
+        <h2 id="player-2" data-id="" data-username="COM">COM</h2>
       </div>
       <div class="user_choice">
         <button class="choice batu">
