@@ -138,6 +138,7 @@ class Game extends Rules {
     this.p2 = new Player_2();
     this.p1.data = document.querySelector("#player").dataset;
     this.p2.data = document.querySelector("#player-2").dataset;
+
     this._defaultState();
     this.resetButton();
   }
@@ -249,6 +250,24 @@ class Game extends Rules {
     this.setPlayerOneListener();
   }
 
+  sendData() {
+    const { id: id_1, username: username_1 } = this.p1.data;
+    const { id: id_2, username: username_2 } = this.p2.data;
+    2;
+    sendReq("PUT", gameHistory(this.id), {
+      player_one: username_1,
+      player_two: username_2,
+      result: this.gamesResult,
+      times: times.now(),
+    });
+
+    sendReq("PUT", updateWin(id_1));
+    sendReq("PUT", updateLose(id_1));
+
+    // sendReq("PUT", updateWin(id_2));
+    // sendReq("PUT", updateLose(id_2));
+  }
+
   result = () => {
     setTimeout(() => {
       if (this.p1 && this.p2) {
@@ -257,73 +276,9 @@ class Game extends Rules {
       this.p1.choice = null;
       this.p2.choice = null;
 
-      // sendReq("PUT", gameHistory(this.id), {
-      //   player_one: this.p1.data.username,
-      //   player_two: this.p2.data.username,
-      //   result: this.gamesResult,
-      //   times: times.now(),
-      // });
-
-      // sendReq("PUT", updateWin(this.p1.data.id));
-      // sendReq("PUT", updateLose(this.p1.data.id));
-      // sendReq("PUT", updateScore(this.p1.data.id));
+      this.sendData();
     }, 400);
   };
-}
-
-class DateTimes {
-  constructor() {
-    this.d = new Date();
-    this.months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-  }
-
-  times = () => {
-    let hours = this.d.getHours();
-    let minutes = this.d.getMinutes();
-    let ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    let strTime = hours + ":" + minutes + " " + ampm;
-    return strTime;
-  };
-
-  now = () =>
-    `${this.d.getDate()} ${
-      this.months[this.d.getMonth()]
-    } ${this.d.getFullYear()} - ${this.times()}`;
-}
-
-const SRC = window.location.origin;
-const times = new DateTimes();
-
-const gameHistory = (id) => `${SRC}/v2/games/${id}`;
-const updateWin = (id) => `${SRC}/v2/users/update/win/${id}`;
-const updateLose = (id) => `${SRC}/v2/users/update/lose/${id}`;
-const updateScore = (id) => `${SRC}/v2/users/update/score/${id}`;
-
-async function sendReq(method, url = "", data) {
-  const response = await fetch(url, {
-    method: method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return response;
 }
 
 const game = new Game();
