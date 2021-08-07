@@ -8,6 +8,7 @@ module.exports = {
         title: "Games History",
         style: "dashboard",
         game,
+        name: req.query.user,
       })
     ),
 };

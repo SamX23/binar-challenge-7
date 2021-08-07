@@ -2,7 +2,11 @@
   <nav class="nav d-flex justify-content-between w-100 py-2">
     <a
       class="btn btn-primary text-light text-decoration-none"
+      <% if(name) { %>
+      href="/?user=<%= name %>"
+      <% } else { %>
       href="/"
+      <% } %>
       ><ion-icon name="home"></ion-icon></ion-icon
     ></a>
   </nav>

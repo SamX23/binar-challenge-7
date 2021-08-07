@@ -42,7 +42,13 @@
           </li>
           <% } %>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/history">LATEST MATCH</a>
+            <a class="nav-link" aria-current="page"
+            <% if (name) { %>
+              href="/history?user=<%= name %>">
+            <% } else { %>
+              href="/history">
+            <% } %>
+            LATEST MATCH</a>
           </li>
           <li class="nav-item">
             <a
