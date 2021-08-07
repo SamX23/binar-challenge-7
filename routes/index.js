@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const restrict = require("../middleware/restrict");
-const redirect = require("../middleware/redirect");
+const { restrict, redirect, savedLogin } = require("../middleware");
 const controller = require("../controllers");
 
 router.get("/", controller.home.index);
@@ -28,6 +27,6 @@ router.post("/dashboard/delete/:id", controller.dashboard.delete);
 // API Router
 router.get("/api/v2/auth/whoami", restrict, controller.api.whoami);
 router.post("/api/v2/auth/register", controller.api.register);
-router.post("/api/v2/auth/login", controller.api.login);
+router.post("/api/v2/auth/login", savedLogin, controller.api.login);
 
 module.exports = router;

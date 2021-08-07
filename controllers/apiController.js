@@ -15,10 +15,17 @@ const format = (user) => {
 };
 
 module.exports = {
-  login: async (req, res) =>
-    await User_game.authenticate(req.body).then((user) =>
-      res.json(format(user))
-    ),
+  login: async (req, res) => {
+    if (req.user) {
+      res.send(
+        `Username ${req.user.username} logged in using token ${req.authorization}`
+      );
+    } else {
+      await User_game.authenticate(req.body)
+        .then((user) => res.json(format(user)))
+        .catch((err) => res.status(400).send("Error controller : " + err));
+    }
+  },
 
   register: async (req, res, next) =>
     req.body.username != null && req.body.password != null

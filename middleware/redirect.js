@@ -1,4 +1,2 @@
-module.exports = (req, res, next) => {
-  if (req.query.user) return next();
-  return res.redirect("login");
-};
+module.exports = (req, res, next) =>
+  req.query.user ? next() : res.redirect("login");
