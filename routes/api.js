@@ -20,7 +20,7 @@ const {
 
 // API V1
 // CREATE /user
-app.post("/v1/users", (req, res) =>
+app.post("/api/v1/users", (req, res) =>
   User_game.create({
     username: req.body.username,
     password: req.body.password,
@@ -30,7 +30,7 @@ app.post("/v1/users", (req, res) =>
 );
 
 // READ /user
-app.get("/v1/users", (req, res) =>
+app.get("/api/v1/users", (req, res) =>
   User_game.findAll().then((user) =>
     user.length == 0
       ? res.status(200).send("No users yet!")
@@ -39,14 +39,14 @@ app.get("/v1/users", (req, res) =>
 );
 
 // READ /user/:id
-app.get("/v1/users/:id", (req, res) =>
+app.get("/api/v1/users/:id", (req, res) =>
   User_game.findOne({ where: { id: req.params.id } }).then((user) =>
     user ? res.status(200).json(user) : res.status(200).send("ID not found")
   )
 );
 
 // Update /user/:id
-app.put("/v1/users/edit/:id", (req, res) =>
+app.put("/api/v1/users/edit/:id", (req, res) =>
   User_game.update(
     {
       username: req.body.username,
@@ -59,7 +59,7 @@ app.put("/v1/users/edit/:id", (req, res) =>
 );
 
 // Delete /user/:id
-app.delete("/v1/users/delete/:id", (req, res) =>
+app.delete("/api/v1/users/delete/:id", (req, res) =>
   User_game.destroy({ where: { id: req.params.id } })
     .then(() =>
       res.status(201).json({
@@ -70,7 +70,7 @@ app.delete("/v1/users/delete/:id", (req, res) =>
 );
 
 // READ /user/profile
-app.get("/v1/profile", (req, res) =>
+app.get("/api/v1/profile", (req, res) =>
   User_game_biodata.findAll({
     include: [
       {
@@ -87,7 +87,7 @@ app.get("/v1/profile", (req, res) =>
 );
 
 // READ /user/profile
-app.get("/v1/profile", (req, res) =>
+app.get("/api/v1/profile", (req, res) =>
   User_game_biodata.findAll({
     include: [
       {
@@ -104,7 +104,7 @@ app.get("/v1/profile", (req, res) =>
 );
 
 // READ /user/profile/:id
-app.get("/v1/profile/:id", (req, res) =>
+app.get("/api/v1/profile/:id", (req, res) =>
   User_game_biodata.findOne({
     where: { id: req.params.id },
     include: [
@@ -118,7 +118,7 @@ app.get("/v1/profile/:id", (req, res) =>
 );
 
 // READ /user/history
-app.get("/v1/history", (req, res) =>
+app.get("/api/v1/history", (req, res) =>
   User_game_history.findAll({
     include: [
       {
@@ -135,7 +135,7 @@ app.get("/v1/history", (req, res) =>
 );
 
 // READ /user/history/:id
-app.get("/v1/history/:id", (req, res) =>
+app.get("/api/v1/history/:id", (req, res) =>
   User_game_history.findOne({
     where: { user_id: req.params.id },
     include: [
@@ -150,7 +150,7 @@ app.get("/v1/history/:id", (req, res) =>
 
 // API V2
 // CREATE /user
-app.post("/v2/users", (req, res) =>
+app.post("/api/v2/users", (req, res) =>
   User_game.create({
     username: req.body.username,
     password: req.body.password,
@@ -168,7 +168,7 @@ app.post("/v2/users", (req, res) =>
 );
 
 // READ /user
-app.get("/v2/users", (req, res) =>
+app.get("/api/v2/users", (req, res) =>
   User_game.findAll({
     include: [
       {
@@ -186,7 +186,7 @@ app.get("/v2/users", (req, res) =>
 );
 
 // READ /user/:id
-app.get("/v2/users/:id", (req, res) =>
+app.get("/api/v2/users/:id", (req, res) =>
   User_game.findOne({
     where: {
       id: req.params.id,
@@ -205,7 +205,7 @@ app.get("/v2/users/:id", (req, res) =>
 );
 
 // Update /users/edit/:id
-app.put("/v2/users/edit/:id", (req, res) =>
+app.put("/api/v2/users/edit/:id", (req, res) =>
   User_game.update(
     {
       username: req.body.username,
@@ -234,20 +234,20 @@ app.put("/v2/users/edit/:id", (req, res) =>
     .catch(() => res.status(422).send("Cannot update user"))
 );
 
-app.put("/v2/users/update/win/:id", (req, res) => {
+app.put("/api/v2/users/update/win/:id", (req, res) => {
   User_game_history.increment("win", { where: { user_id: req.params.id } });
 });
 
-app.put("/v2/users/update/lose/:id", (req, res) => {
+app.put("/api/v2/users/update/lose/:id", (req, res) => {
   User_game_history.increment("lose", { where: { user_id: req.params.id } });
 });
 
-app.put("/v2/users/update/score/:id", (req, res) => {
+app.put("/api/v2/users/update/score/:id", (req, res) => {
   User_game_history.increment("score", { where: { user_id: req.params.id } });
 });
 
 // Delete /users/delete/:id
-app.delete("/v2/users/delete/:id", (req, res) =>
+app.delete("/api/v2/users/delete/:id", (req, res) =>
   User_game.destroy({ where: { id: req.params.id } })
     .then(() =>
       res.status(201).json({
@@ -257,13 +257,13 @@ app.delete("/v2/users/delete/:id", (req, res) =>
     .catch(() => res.status(422).send("Cannot delete the user id"))
 );
 
-app.get("/v2/games", (req, res) =>
+app.get("/api/v2/games", (req, res) =>
   Game.findAll({
     order: [["id", "ASC"]],
   }).then((game) => res.status(200).send(game))
 );
 
-app.post("/v2/games", (req, res) =>
+app.post("/api/v2/games", (req, res) =>
   Game.create({
     player_one: req.body.player_one,
     player_two: req.body.player_two,
@@ -272,7 +272,7 @@ app.post("/v2/games", (req, res) =>
   }).then((game) => res.status(200))
 );
 
-app.put("/v2/games/:id", (req, res) =>
+app.put("/api/v2/games/:id", (req, res) =>
   Game.update(
     {
       player_one: req.body.player_one,

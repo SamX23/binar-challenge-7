@@ -26,19 +26,19 @@ API can be accessed from such endpoints:
 
 #### API V1
 
-- Get all users : GET <code>/v1/users</code>
-- Create a user : POST <code>/v1/users</code>
-- Edit a user : PUT <code>/v1/users/edit/:id</code>
-- Delete a user : DELETE <code>/v1/users/delete/:id</code>
+- Get all users : GET <code>/api/v1/users</code>
+- Create a user : POST <code>/api/v1/users</code>
+- Edit a user : PUT <code>/api/v1/users/edit/:id</code>
+- Delete a user : DELETE <code>/api/v1/users/delete/:id</code>
 
 #### API V2
 
-- Get all users, profile and history : GET <code>/v2/users</code>
-- Create a user : POST <code>/v2/users</code>
-- Edit a user : PUT <code>/v2/users/edit/:id</code>
-- Delete a user : DELETE <code>/v2/users/delete/:id</code>
+- Get all users, profile and history : GET <code>/api/v2/users</code>
+- Create a user : POST <code>/api/v2/users</code>
+- Edit a user : PUT <code>/api/v2/users/edit/:id</code>
+- Delete a user : DELETE <code>/api/v2/users/delete/:id</code>
 
-- Get games history : GET <code>/v2/games</code>
+- Get games history : GET <code>/api/v2/games</code>
 
 ### CHORE
 

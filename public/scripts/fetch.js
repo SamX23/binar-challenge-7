@@ -37,10 +37,10 @@ class DateTimes {
 const SRC = window.location.origin;
 const times = new DateTimes();
 
-const gameHistory = (id) => `${SRC}/v2/games/${id}`;
-const updateWin = (id) => `${SRC}/v2/users/update/win/${id}`;
-const updateLose = (id) => `${SRC}/v2/users/update/lose/${id}`;
-const updateScore = (id) => `${SRC}/v2/users/update/score/${id}`;
+const gameHistory = (id) => `${SRC}/api/v2/games/${id}`;
+const updateWin = (id) => `${SRC}/api/v2/users/update/win/${id}`;
+const updateLose = (id) => `${SRC}/api/v2/users/update/lose/${id}`;
+const updateScore = (id) => `${SRC}/api/v2/users/update/score/${id}`;
 
 async function sendReq(method, url = "", data) {
   const response = await fetch(url, {
