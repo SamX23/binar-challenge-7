@@ -5,6 +5,7 @@ const register = require("./registerController");
 const profileController = require("./profileController");
 const dashboard = require("./dashboardController");
 const gameHistory = require("./gameHistoryController");
+const roomList = require("./roomListController");
 
 module.exports = {
   home,
@@ -14,4 +15,5 @@ module.exports = {
   dashboard,
   profileController,
   gameHistory,
+  roomList,
 };

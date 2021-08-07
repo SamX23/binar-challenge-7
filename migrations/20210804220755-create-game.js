@@ -18,11 +18,11 @@ module.exports = {
       },
       result: {
         type: Sequelize.STRING,
-        defaultValue: "Unfinished",
+        defaultValue: "No Result",
       },
       times: {
         type: Sequelize.STRING,
-        defaultValue: "Unfinished",
+        defaultValue: "No Update",
       },
       room: {
         type: Sequelize.STRING,
