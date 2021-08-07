@@ -225,6 +225,7 @@ app.put("/v2/users/edit/:id", (req, res) =>
         {
           win: req.body.win,
           lose: req.body.lose,
+          score: req.body.score,
         },
         { where: { user_id: req.params.id } }
       );
@@ -232,6 +233,18 @@ app.put("/v2/users/edit/:id", (req, res) =>
     .then((user) => res.status(201).json(user))
     .catch(() => res.status(422).send("Cannot update user"))
 );
+
+app.put("/v2/users/update/win/:id", (req, res) => {
+  User_game_history.increment("win", { where: { user_id: req.params.id } });
+});
+
+app.put("/v2/users/update/lose/:id", (req, res) => {
+  User_game_history.increment("lose", { where: { user_id: req.params.id } });
+});
+
+app.put("/v2/users/update/score/:id", (req, res) => {
+  User_game_history.increment("score", { where: { user_id: req.params.id } });
+});
 
 // Delete /users/delete/:id
 app.delete("/v2/users/delete/:id", (req, res) =>
@@ -256,7 +269,19 @@ app.post("/v2/games", (req, res) =>
     player_two: req.body.player_two,
     result: req.body.result,
     times: req.body.times,
-  }).then((game) => res.status(200).send(game))
+  }).then((game) => res.status(200))
+);
+
+app.put("/v2/games/:id", (req, res) =>
+  Game.update(
+    {
+      player_one: req.body.player_one,
+      player_two: req.body.player_two,
+      result: req.body.result,
+      times: req.body.times,
+    },
+    { where: { id: req.params.id } }
+  ).then((game) => res.status(200).send(game))
 );
 
 module.exports = app;
