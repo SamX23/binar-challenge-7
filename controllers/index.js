@@ -7,6 +7,7 @@ const profileController = require("./profileController");
 const dashboard = require("./dashboardController");
 const gameHistory = require("./gameHistoryController");
 const roomList = require("./roomListController");
+const api = require("./apiController");
 
 module.exports = {
   home,
@@ -18,4 +19,5 @@ module.exports = {
   profileController,
   gameHistory,
   roomList,
+  api,
 };

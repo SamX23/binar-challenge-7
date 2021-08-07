@@ -3,6 +3,7 @@ module.exports = {
   index: async (req, res) =>
     await Game.findAll({
       order: [["updatedAt", "DESC"]],
+      limit: 10,
     }).then((game) =>
       res.status(200).render("gameHistory", {
         title: "Games History",

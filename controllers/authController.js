@@ -4,16 +4,6 @@ const {
   User_game_history,
 } = require("../models");
 
-const format = (user) => {
-  const { id, username, is_admin } = user;
-  return {
-    id,
-    username,
-    is_admin,
-    accessToken: user.generateToken(),
-  };
-};
-
 module.exports = {
   login: async (req, res, next) =>
     await User_game.authenticate(req.body)
@@ -39,21 +29,5 @@ module.exports = {
   logout: (req, res) => {
     req.logout();
     res.redirect("/");
-  },
-
-  // To API
-  login_api: async (req, res) =>
-    await User_game.authenticate(req.body).then((user) =>
-      res.json(format(user))
-    ),
-
-  register_api: async (req, res, next) =>
-    await User_game.register(req.body)
-      .then((user) => res.json(format(user)))
-      .catch((err) => next(err)),
-
-  whoami: (req, res) => {
-    const currentUser = req.user;
-    res.json(currentUser);
   },
 };

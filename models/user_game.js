@@ -48,8 +48,17 @@ module.exports = (sequelize, DataTypes) => {
   User_game.init(
     {
       user_id: DataTypes.INTEGER,
-      username: DataTypes.STRING,
-      password: DataTypes.STRING,
+      username: {
+        type: DataTypes.STRING,
+        validate: {
+          isAlphanumeric: true,
+          isLowercase: true,
+          min: 4,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+      },
       is_admin: DataTypes.BOOLEAN,
     },
     {
