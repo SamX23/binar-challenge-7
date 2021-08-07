@@ -42,4 +42,5 @@ API can be accessed from such endpoints:
 
 ### CHORE
 
-- Send update to user history table afte games
+- Send update to user history table after games
+- Multiplayer feature (WIP)

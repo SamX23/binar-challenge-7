@@ -15,9 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       player_one: DataTypes.STRING,
       player_two: DataTypes.STRING,
-      result: DataTypes.STRING,
+      winner: DataTypes.STRING,
       times: DataTypes.STRING,
       room: DataTypes.STRING,
+      result: DataTypes.ARRAY(DataTypes.STRING),
     },
     {
       sequelize,

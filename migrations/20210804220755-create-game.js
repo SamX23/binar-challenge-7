@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: "Com",
       },
-      result: {
+      winner: {
         type: Sequelize.STRING,
         defaultValue: "No Result",
       },
@@ -28,6 +28,10 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true,
         allowNull: false,
+      },
+      result: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: ["", "", "", "", ""],
       },
       createdAt: {
         allowNull: false,
