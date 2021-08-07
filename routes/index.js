@@ -1,33 +1,33 @@
-const express = require("express");
-const router = express();
+const router = require("express").Router();
 const restrict = require("../middleware/restrict");
+const redirect = require("../middleware/redirect");
 const controller = require("../controllers");
-const passport = require("../lib/passport");
-const login = passport.authenticate("local", {
-  failureRedirect: "/login?msg=notfound",
-  failureFlash: true,
-});
-
-router.use(express.Router());
 
 router.get("/", controller.home.index);
 router.get("/login", controller.login.index);
 router.get("/register", controller.register.index);
-router.get("/room-list", controller.roomList.index);
+router.get("/history", controller.gameHistory.index);
 
-router.get("/dashboard", restrict, controller.dashboard.index);
-router.get("/dashboard/*", restrict, controller.dashboard.handler);
-router.get("/profile", restrict, controller.profileController.index);
-router.get("/history", restrict, controller.gameHistory.index);
-router.get("/games/:room", restrict, controller.games.index);
+// Protected page
+router.get("/dashboard", redirect, controller.dashboard.index);
+router.get("/dashboard/*", redirect, controller.dashboard.handler);
+router.get("/profile", redirect, controller.profileController.index);
+router.get("/room-list", redirect, controller.roomList.index);
+router.get("/games/:room", redirect, controller.games.index);
 
 router.get("/auth/logout", controller.auth.logout);
-router.post("/auth/login", login, controller.auth.login);
+router.post("/auth/login", controller.auth.login);
 router.post("/auth/register", controller.auth.register);
+
 router.post("/game/create", controller.games.create);
 router.post("/profile/update", controller.profileController.update);
 router.post("/dashboard/add", controller.dashboard.create);
 router.post("/dashboard/edit/:id", controller.dashboard.update);
 router.post("/dashboard/delete/:id", controller.dashboard.delete);
+
+// NEW Route for API
+router.post("/api/v2/auth/register", controller.auth.register_api);
+router.post("/api/v2/auth/login", controller.auth.login_api);
+router.get("/api/v2/auth/whoami", restrict, controller.auth.whoami);
 
 module.exports = router;

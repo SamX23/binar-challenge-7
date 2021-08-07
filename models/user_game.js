@@ -2,6 +2,7 @@
 const { Model } = require("sequelize");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = (sequelize, DataTypes) => {
   class User_game extends Model {
@@ -21,12 +22,23 @@ module.exports = (sequelize, DataTypes) => {
 
     checkPassword = (password) => bcrypt.compareSync(password, this.password);
 
+    generateToken = () => {
+      const payload = {
+        id: this.id,
+        username: this.username,
+        is_admin: this.is_admin,
+      };
+      const rahasia = "secretsamitoken";
+      const token = jwt.sign(payload, rahasia);
+      return token;
+    };
+
     static authenticate = async ({ username, password }) => {
       try {
         const user = await this.findOne({ where: { username } });
-        if (!user) return Promise.reject("notfound");
+        if (!user) return Promise.reject("User not found!");
         const isPasswordValid = user.checkPassword(password);
-        if (!isPasswordValid) return Promise.reject("passwordwrong");
+        if (!isPasswordValid) return Promise.reject("Wrong password");
         return Promise.resolve(user);
       } catch (err) {
         return Promise.reject(err);

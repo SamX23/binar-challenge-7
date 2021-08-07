@@ -7,24 +7,26 @@ const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
 const path = require("path");
 const logger = require("morgan");
+const passport = require("./lib/passport");
 
 const router = require("./routes/");
 const api = require("./routes/api");
 
 app.use(express.urlencoded({ extended: false }));
+
+const oneDay = 1000 * 60 * 60 * 24;
+
 app.use(
   session({
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: oneDay },
     store: new session.MemoryStore(),
     saveUninitialized: true,
-    resave: "true",
-    secret: "secret",
+    resave: "false",
+    secret: "secretsamitoken",
   })
 );
 
-const passport = require("./lib/passport");
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(flash());
 
 app.use(logger("dev"));
