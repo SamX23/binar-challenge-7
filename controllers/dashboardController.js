@@ -21,7 +21,7 @@ module.exports = {
         })
       );
     } else if (req.query.user != "admin") {
-      res.redirect("/dashboard-user");
+      res.redirect("/login");
     }
   },
 

@@ -1,5 +1,6 @@
 const home = require("./homeController");
 const games = require("./gamesController");
+const auth = require("./authController");
 const login = require("./loginController");
 const register = require("./registerController");
 const profileController = require("./profileController");
@@ -9,6 +10,7 @@ const roomList = require("./roomListController");
 
 module.exports = {
   home,
+  auth,
   games,
   login,
   register,
