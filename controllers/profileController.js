@@ -1,10 +1,10 @@
 const { User_game, User_game_biodata } = require("../models");
 
 module.exports = {
-  index: (req, res) => {
+  index: async (req, res) => {
     const msg = req.query.msg;
     const username = req.query.user;
-    User_game.findOne({
+    await User_game.findOne({
       where: {
         username: username,
       },
@@ -26,6 +26,7 @@ module.exports = {
         : res.status(200).redirect("/");
     });
   },
+
   update: async (req, res, next) => {
     const full_name = req.body.full_name;
     const email = req.body.email;

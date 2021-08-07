@@ -6,11 +6,11 @@ const {
 const bcrypt = require("bcrypt");
 
 module.exports = {
-  index: (req, res) => {
+  index: async (req, res) => {
     const msg = req.query.msg;
 
     if (req.query.user == "admin") {
-      User_game.findAll({
+      await User_game.findAll({
         order: [["id", "ASC"]],
       }).then((user) =>
         res.status(200).render("dashboard", {
@@ -32,7 +32,7 @@ module.exports = {
       password: hashedPassword,
     };
 
-    User_game.findOne({
+    await User_game.findOne({
       where: {
         username: req.body.username,
       },
@@ -80,7 +80,7 @@ module.exports = {
         },
       });
 
-    User_game.findOne({
+    await User_game.findOne({
       where: {
         id: req.params.id,
       },
@@ -105,13 +105,13 @@ module.exports = {
       .catch((err) => res.send("ERROR: " + err));
   },
 
-  delete: (req, res) =>
-    User_game.destroy({ where: { id: req.params.id } })
+  delete: async (req, res) =>
+    await User_game.destroy({ where: { id: req.params.id } })
       .then(() => res.status(201).redirect("/dashboard?user=admin&msg=deleted"))
       .catch(() => res.status(422).send("Cannot delete the games id")),
 
-  handler: (req, res) =>
-    User_game.findAll().then(() =>
+  handler: async (req, res) =>
+    await User_game.findAll().then(() =>
       res.status(200).redirect("/dashboard?user=admin")
     ),
 };

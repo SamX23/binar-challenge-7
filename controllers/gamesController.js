@@ -2,8 +2,8 @@ const { Game } = require("../models");
 const { User_game } = require("../models");
 
 module.exports = {
-  index: (req, res, next) =>
-    Game.findOne({
+  index: async (req, res, next) =>
+    await Game.findOne({
       where: {
         id: req.query.id,
       },
@@ -21,8 +21,8 @@ module.exports = {
         });
       })
     ),
-  create: (req, res, next) =>
-    Game.create({
+  create: async (req, res, next) =>
+    await Game.create({
       player_one: req.body.username,
       room: req.body.room,
     })

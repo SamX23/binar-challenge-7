@@ -15,15 +15,15 @@ const format = (user) => {
 };
 
 module.exports = {
-  login: (req, res, next) =>
-    User_game.authenticate(req.body)
+  login: async (req, res, next) =>
+    await User_game.authenticate(req.body)
       .then((user) =>
         res.status(200).redirect("/?msg=login&user=" + user.username)
       )
       .catch((err) => res.status(400).redirect("/login?msg=notfound")),
 
-  register: (req, res, next) => {
-    User_game.register(req.body)
+  register: async (req, res, next) => {
+    await User_game.register(req.body)
       .then((user_game) => {
         User_game_biodata.create({
           user_id: user_game.get("id"),
@@ -42,11 +42,13 @@ module.exports = {
   },
 
   // To API
-  login_api: (req, res) =>
-    User_game.authenticate(req.body).then((user) => res.json(format(user))),
+  login_api: async (req, res) =>
+    await User_game.authenticate(req.body).then((user) =>
+      res.json(format(user))
+    ),
 
-  register_api: (req, res, next) =>
-    User_game.register(req.body)
+  register_api: async (req, res, next) =>
+    await User_game.register(req.body)
       .then((user) => res.json(format(user)))
       .catch((err) => next(err)),
 
