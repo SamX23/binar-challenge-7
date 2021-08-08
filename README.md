@@ -22,23 +22,31 @@ Make sure you have installed sequelize-cli
 
 ### API
 
-API can be accessed from such endpoints:
-
-#### API V1
-
-- Get all users : GET <code>/api/v1/users</code>
-- Create a user : POST <code>/api/v1/users</code>
-- Edit a user : PUT <code>/api/v1/users/edit/:id</code>
-- Delete a user : DELETE <code>/api/v1/users/delete/:id</code>
+API can be accessed from such endpoints, by using auth token. <strong>Generate your auth token from register or login using admin</strong>, check your token from /whoami
 
 #### API V2
 
-- Get all users, profile and history : GET <code>/api/v2/users</code>
+- Get all users : GET <code>/api/v2/users</code>
+- Get all room : GET <code>/api/v2/room</code>
+- Get a users : GET <code>/api/v2/users/:id</code>
+- Get a room : GET <code>/api/v2/room/:room</code>
+
+##### USERS
+
 - Create a user : POST <code>/api/v2/users</code>
 - Edit a user : PUT <code>/api/v2/users/edit/:id</code>
 - Delete a user : DELETE <code>/api/v2/users/delete/:id</code>
 
-- Get games history : GET <code>/api/v2/games</code>
+##### AUTH
+
+- Login user : POST <code>/api/v2/auth/login</code>
+- Register user : POST <code>/api/v2/auth/register</code>
+- Check your token : GET <code>api/v2/whoami</code>
+
+##### GAMES
+
+- Create a room : POST <code>/api/v2/room/create</code>
+- Join room : POST <code>/api/v2/room/:room/join</code>
 
 ### CHORE
 
