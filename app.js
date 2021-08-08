@@ -19,8 +19,7 @@ const oneDay = 1000 * 60 * 60 * 24;
 app.use(
   session({
     cookie: { maxAge: oneDay },
-    store: new session.MemoryStore(),
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: "false",
     secret: "secretsamitoken",
   })
