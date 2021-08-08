@@ -54,7 +54,7 @@ module.exports = {
               })
           : res.redirect("/dashboard?user=admin&msg=exist")
       )
-      .catch((err) => res.send("ERROR: " + err));
+      .catch((err) => res.status(400).send(`Error : ${err}`));
   },
 
   update: async (req, res) => {
@@ -102,7 +102,7 @@ module.exports = {
           updateData({ password: hashedPassword });
         }
       })
-      .catch((err) => res.send("ERROR: " + err));
+      .catch((err) => res.status(400).send(`Error : ${err}`));
   },
 
   delete: async (req, res) =>
