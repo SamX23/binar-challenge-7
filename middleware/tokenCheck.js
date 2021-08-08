@@ -13,9 +13,24 @@ module.exports = (req, res, next) => {
         });
       }
 
-      req.user = user;
-      req.authorization = authHeader;
-      next();
+      // Check token auth header == auth token user
+      if (req.body.username) {
+        if (req.body.username == user.username) {
+          req.user = user;
+          req.authorization = authHeader;
+          next();
+        } else {
+          return res.status(403).send({
+            code: 403,
+            status: "error",
+            message: "Your token is not match.",
+          });
+        }
+      } else {
+        req.user = user;
+        req.authorization = authHeader;
+        next();
+      }
     });
   } else {
     res.status(403).send({
