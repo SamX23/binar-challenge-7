@@ -37,7 +37,7 @@ class DateTimes {
 const SRC = window.location.origin;
 const times = new DateTimes();
 
-const gameHistory = (id) => `${SRC}/api/v2/games/${id}`;
+const gameHistory = (id) => `${SRC}/api/v2/room/${id}`;
 const updateWin = (id) => `${SRC}/api/v2/users/update/win/${id}`;
 const updateLose = (id) => `${SRC}/api/v2/users/update/lose/${id}`;
 const updateScore = (id) => `${SRC}/api/v2/users/update/score/${id}`;

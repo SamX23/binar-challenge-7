@@ -143,37 +143,18 @@ app.delete(
       .catch(() => res.status(422).send("Cannot delete the user id"))
 );
 
-app.get(
-  "/api/v2/games",
-  async (req, res) =>
-    await Game.findAll({
-      order: [["id", "ASC"]],
-    }).then((game) => res.status(200).send(game))
-);
-
-app.post(
-  "/api/v2/games",
-  async (req, res) =>
-    await Game.create({
-      player_one: req.body.player_one,
-      player_two: req.body.player_two,
-      result: req.body.result,
-      times: req.body.times,
-    }).then((game) => res.status(200))
-);
-
-app.put(
-  "/api/v2/games/:id",
-  async (req, res) =>
-    await Game.update(
-      {
-        player_one: req.body.player_one,
-        player_two: req.body.player_two,
-        result: req.body.result,
-        times: req.body.times,
-      },
-      { where: { id: req.params.id } }
-    ).then((game) => res.status(200).send(game))
-);
+// app.put(
+//   "/api/v2/room/:id",
+//   async (req, res) =>
+//     await Game.update(
+//       {
+//         player_one: req.body.player_one,
+//         player_two: req.body.player_two,
+//         result: req.body.result,
+//         times: req.body.times,
+//       },
+//       { where: { id: req.params.id } }
+//     ).then((game) => res.status(200).send(game))
+// );
 
 module.exports = app;

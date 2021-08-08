@@ -10,11 +10,11 @@ module.exports = {
       },
       player_one: {
         type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: "No player",
       },
       player_two: {
         type: Sequelize.STRING,
-        defaultValue: "Com",
+        defaultValue: "No player",
       },
       winner: {
         type: Sequelize.STRING,

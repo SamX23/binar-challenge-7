@@ -28,7 +28,7 @@ module.exports = {
     })
       .then((game) =>
         res.redirect(
-          `/games/${req.body.room}?user=${req.body.username}&id=${game.id}`
+          `/room/${req.body.room}?user=${req.body.username}&id=${game.id}`
         )
       )
       .catch((err) => next(err)),

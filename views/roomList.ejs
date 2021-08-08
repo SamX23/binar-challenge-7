@@ -34,7 +34,7 @@
               <% if(game.length) { %> <% game.map((item, index) => { %>
               <tr>
                 <th class="text-center"><%= index+1 %></th>
-                <th><a href="/games/<%= item.room %>"><%= item.room %></a></th>
+                <th><a href="/room/<%= item.room %>"><%= item.room %></a></th>
                 <th class="text-center"><%= item.times %></th>
               </tr>
               <% }) %> <% } else { %>

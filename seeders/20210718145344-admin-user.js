@@ -17,7 +17,7 @@ module.exports = {
         username: "admin",
         password: bcrypt.hashSync("admin", 10),
         is_admin: true,
-        accessToken: User_game.generateToken(),
+        accessToken: User_game.generateToken("admin", true),
         createdAt: new Date(),
         updatedAt: new Date(),
       },

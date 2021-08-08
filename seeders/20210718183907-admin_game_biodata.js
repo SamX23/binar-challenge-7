@@ -16,8 +16,8 @@ module.exports = {
       [
         {
           user_id: 1,
-          full_name: "admin",
-          email: "a@min.com",
+          full_name: "",
+          email: "",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
