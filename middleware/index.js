@@ -1,9 +1,9 @@
 const restrict = require("./restrict");
 const redirect = require("./redirect");
-const savedLogin = require("./savedLogin");
+const tokenCheck = require("./tokenCheck");
 
 module.exports = {
   restrict,
   redirect,
-  savedLogin,
+  tokenCheck,
 };
