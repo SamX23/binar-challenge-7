@@ -5,8 +5,8 @@ module.exports = {
       order: [["updatedAt", "DESC"]],
       limit: 10,
     }).then((game) =>
-      res.status(200).render("gameHistory", {
-        title: "Games History",
+      res.status(200).render("roomHistory", {
+        title: "Rooms History",
         style: "dashboard",
         game,
         name: req.query.user,

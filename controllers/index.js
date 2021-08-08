@@ -5,7 +5,7 @@ const login = require("./loginController");
 const register = require("./registerController");
 const profileController = require("./profileController");
 const dashboard = require("./dashboardController");
-const gameHistory = require("./gameHistoryController");
+const roomHistory = require("./roomHistoryController");
 const roomList = require("./roomListController");
 const api = require("./apiController");
 
@@ -17,7 +17,7 @@ module.exports = {
   register,
   dashboard,
   profileController,
-  gameHistory,
+  roomHistory,
   roomList,
   api,
 };
