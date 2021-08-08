@@ -17,16 +17,20 @@ module.exports = (sequelize, DataTypes) => {
     static #encrypt = (password) => bcrypt.hashSync(password, 10);
     static register = ({ username, password }) => {
       const encryptedPassword = this.#encrypt(password);
-      return this.create({ username, password: encryptedPassword });
+
+      return this.create({
+        username,
+        password: encryptedPassword,
+        accessToken: this.generateToken(username, false),
+      });
     };
 
     checkPassword = (password) => bcrypt.compareSync(password, this.password);
 
-    generateToken = () => {
+    static generateToken = (username, is_admin) => {
       const payload = {
-        id: this.id,
-        username: this.username,
-        is_admin: this.is_admin,
+        username: username,
+        is_admin: is_admin,
       };
       const rahasia = "secretsamitoken";
       const token = jwt.sign(payload, rahasia);
@@ -60,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       is_admin: DataTypes.BOOLEAN,
+      accessToken: DataTypes.STRING,
     },
     {
       sequelize,

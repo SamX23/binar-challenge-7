@@ -5,12 +5,12 @@ const {
 } = require("../models");
 
 const format = (user) => {
-  const { id, username, is_admin } = user;
+  const { id, username, is_admin, accessToken } = user;
   return {
     id,
     username,
     is_admin,
-    accessToken: user.generateToken(),
+    accessToken,
   };
 };
 

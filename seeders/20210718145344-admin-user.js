@@ -1,6 +1,6 @@
 "use strict";
 const bcrypt = require("bcrypt");
-
+const { User_game } = require("../models");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -17,6 +17,7 @@ module.exports = {
         username: "admin",
         password: bcrypt.hashSync("admin", 10),
         is_admin: true,
+        accessToken: User_game.generateToken(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
