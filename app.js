@@ -8,9 +8,7 @@ const createError = require("http-errors");
 const path = require("path");
 const logger = require("morgan");
 const passport = require("./lib/passport");
-
 const router = require("./routes/");
-const api = require("./routes/api");
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -39,7 +37,6 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(router);
-app.use(api);
 
 app.use((req, res, next) => next(createError(404)));
 app.use((err, req, res, next) => {

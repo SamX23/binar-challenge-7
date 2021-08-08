@@ -6,6 +6,110 @@ const {
 } = require("../models");
 
 module.exports = {
+  all_user: async (req, res) =>
+    await User_game.findAll({
+      include: [
+        {
+          model: User_game_biodata,
+        },
+        {
+          model: User_game_history,
+        },
+      ],
+    }).then((user) =>
+      user.length == 0
+        ? res.status(200).send("No users yet!")
+        : res.status(200).json(user)
+    ),
+
+  user: async (req, res) =>
+    await User_game.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: User_game_biodata,
+        },
+        {
+          model: User_game_history,
+        },
+      ],
+    }).then((user) =>
+      user ? res.status(200).json(user) : res.status(200).send("ID not found")
+    ),
+
+  update_user: async (req, res) =>
+    await User_game.update(
+      {
+        username: req.body.username,
+        password: req.body.password,
+      },
+      { where: { id: req.params.id } }
+    )
+      .then(async (user) => {
+        await User_game_biodata.update(
+          {
+            full_name: req.body.full_name,
+            email: req.body.email,
+          },
+          { where: { user_id: req.params.id } }
+        );
+        await User_game_history.update(
+          {
+            win: req.body.win,
+            lose: req.body.lose,
+            score: req.body.score,
+          },
+          { where: { user_id: req.params.id } }
+        );
+
+        res.status(201).send({
+          code: 201,
+          message: `Users id of ${req.params.id} has been updated!`,
+        });
+      })
+      .catch(() => res.status(422).send("Cannot update user")),
+
+  delete_user: async (req, res) =>
+    await User_game.destroy({ where: { id: req.params.id } })
+      .then(() =>
+        res.status(201).json({
+          message: `Users id of ${req.params.id} has been deleted!`,
+        })
+      )
+      .catch(() => res.status(422).send("Cannot delete the user id")),
+
+  add_win: async (req, res) =>
+    await User_game_history.increment("win", {
+      where: { user_id: req.params.id },
+    }).then((user) =>
+      res.send({
+        code: 200,
+        message: "User win data has been updated",
+      })
+    ),
+
+  add_lose: async (req, res) =>
+    await User_game_history.increment("lose", {
+      where: { user_id: req.params.id },
+    }).then((user) =>
+      res.send({
+        code: 200,
+        message: "User lose data has been updated",
+      })
+    ),
+
+  add_score: async (req, res) =>
+    await User_game_history.increment("score", {
+      where: { user_id: req.params.id },
+    }).then((user) =>
+      res.send({
+        code: 200,
+        message: "User score data has been updated",
+      })
+    ),
+
   login: async (req, res) => {
     if (req.user) {
       res.send({
@@ -159,4 +263,15 @@ module.exports = {
         })
       );
   },
+
+  // result: async (req, res) =>
+  //   await Game.update(
+  //     {
+  //       player_one: req.body.player_one,
+  //       player_two: req.body.player_two,
+  //       result: req.body.result,
+  //       times: req.body.times,
+  //     },
+  //     { where: { id: req.params.id } }
+  //   ).then((game) => res.status(200).send(game)),
 };
