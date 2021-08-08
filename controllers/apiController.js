@@ -89,11 +89,74 @@ module.exports = {
       order: [["id", "ASC"]],
     }).then((game) => res.status(200).send(game)),
 
-  play_room: (req, res, next) => {
-    res.send(`Room id ${req.params.room} is not finished yet.`);
+  room: async (req, res, next) => {
+    await Game.findOne({
+      where: {
+        room: req.params.room,
+      },
+    }).then((game) => {
+      game
+        ? res.send(game)
+        : res.status(400).send({
+            code: 400,
+            status: "error",
+            message: "Room not found",
+          });
+    });
   },
 
-  fight: (req, res, next) => {
-    res.send("Not finished yet :)");
+  join: async (req, res, next) => {
+    const roomId = req.params.room;
+    let player = null;
+    await User_game.findOne({ where: { username: req.body.username } })
+      .then((user) => {
+        if (user) {
+          player = user;
+        } else {
+          res.status(400).send({
+            code: 400,
+            status: "error",
+            message: "User not found",
+          });
+        }
+      })
+      .catch((err) =>
+        res.status(400).send({
+          code: 400,
+          status: "error",
+          message: "Username not found",
+        })
+      );
+
+    await Game.findOne({
+      where: {
+        room: roomId,
+      },
+    })
+      .then((room) => {
+        if (player) {
+          if (room.player_two == "") {
+            Game.update(
+              {
+                player_two: player.username,
+              },
+              { where: { room: roomId } }
+            ).then(() => res.send(room));
+          } else {
+            res.status(200).send({
+              code: 200,
+              status: "error",
+              message: "Room is already full.",
+            });
+          }
+        }
+      })
+      .catch((err) =>
+        res.status(400).send({
+          code: 400,
+          status: "error",
+          message: "Username not found",
+        })
+      );
   },
 };
