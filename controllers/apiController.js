@@ -4,16 +4,6 @@ const {
   User_game_history,
 } = require("../models");
 
-const format = (user) => {
-  const { id, username, is_admin, accessToken } = user;
-  return {
-    id,
-    username,
-    is_admin,
-    accessToken,
-  };
-};
-
 module.exports = {
   login: async (req, res) => {
     if (req.user) {
@@ -22,7 +12,11 @@ module.exports = {
       );
     } else {
       await User_game.authenticate(req.body)
-        .then((user) => res.json(format(user)))
+        .then((user) =>
+          res.send(
+            `Username ${user.username} logged in succesfully, here is your access token ${user.accessToken}`
+          )
+        )
         .catch((err) => res.status(400).send("Error controller : " + err));
     }
   },
