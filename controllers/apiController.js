@@ -22,7 +22,13 @@ module.exports = {
             user,
           })
         )
-        .catch((err) => res.status(400).send(`Error : ${err}`));
+        .catch((err) =>
+          res.status(400).send({
+            code: 400,
+            status: "error",
+            message: "Please insert your username and password",
+          })
+        );
     }
   },
 
@@ -40,7 +46,7 @@ module.exports = {
           })
           .catch((err) => res.status(400).send(`Error : ${err}`))
       : res.send({
-          code: 200,
+          code: 400,
           status: "error",
           message: "Please insert your username and password",
         }),
@@ -58,8 +64,7 @@ module.exports = {
             .then((game) =>
               res.send({
                 code: 200,
-                message:
-                  "Room succesfully generated, see already room at '/room-list'",
+                message: "Room generated succesfully !",
                 game,
               })
             )

@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
     res.status(403).send({
       code: 403,
       status: "error",
-      message: "You don't have authentication token.",
+      message: "You don't have permission, login to get authentication token.",
     });
     // res.redirect("/login");
   }

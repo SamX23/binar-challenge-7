@@ -27,10 +27,10 @@ router.get("/room/:room", redirect, controller.games.index);
 // API Router
 router.get("/api/v2/whoami", restrict, controller.api.whoami);
 router.get("/api/v2/room", tokenCheck, controller.api.all_room);
+router.get("/api/v2/room/:room", tokenCheck, controller.api.play_room);
 
 router.post("/api/v2/auth/login", loginToken, controller.api.login);
 router.post("/api/v2/auth/register", controller.api.register);
 router.post("/api/v2/room/create", tokenCheck, controller.api.create_room);
-router.get("/api/v2/room/:room", tokenCheck, controller.api.play_room);
 
 module.exports = router;
