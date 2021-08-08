@@ -27,20 +27,16 @@ API can be accessed from such endpoints, by using auth token. <strong>Generate y
 #### API V2
 
 - Get all users : GET <code>/api/v2/users</code>
-- Get all room : GET <code>/api/v2/room</code>
-- Get a users : GET <code>/api/v2/users/:id</code>
+- Get all room : GET <code>/api/v2/rooms</code>
+- Get a user : GET <code>/api/v2/user/:id</code>
 - Get a room : GET <code>/api/v2/room/:room</code>
 
 ##### USERS
 
-- Create a user : POST <code>/api/v2/users</code>
-- Edit a user : PUT <code>/api/v2/users/edit/:id</code>
-- Delete a user : DELETE <code>/api/v2/users/delete/:id</code>
-
-##### AUTH
-
+- Create user : POST <code>/api/v2/auth/register</code>
+- Edit a user : PUT <code>/api/v2/user/edit/:id</code>
+- Delete a user : DELETE <code>/api/v2/user/delete/:id</code>
 - Login user : POST <code>/api/v2/auth/login</code>
-- Register user : POST <code>/api/v2/auth/register</code>
 - Check your token : GET <code>api/v2/whoami</code>
 
 ##### GAMES
