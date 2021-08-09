@@ -23,6 +23,3 @@ const editProfileButton = document.querySelector(".editProfileButton");
 const updateUserModal = document.getElementById("updateUserModal");
 const userId = document.getElementById("user_id");
 const userIdLabel = document.getElementById("userIdLabel");
-
-// console.log(userId.textContent);
-// userIdLabel.value = userId.textContent;
