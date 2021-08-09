@@ -10,6 +10,7 @@
 
 ### How to use :
 
+Browser games can only play as single player, multiplayer available on API Endpoints but still limited(WIP).
 Make sure you have installed sequelize-cli
 
 - <code>yarn</code>
