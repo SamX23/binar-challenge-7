@@ -31,6 +31,12 @@ router.get("/profile", redirect, controller.profileController.index);
 router.get("/room-list", redirect, controller.roomList.index);
 router.get("/room/:room", redirect, controller.games.index);
 
+// API for games page
+router.put("/room/update/:id", controller.api.result);
+router.put("/user/update/win/:id", controller.api.add_win);
+router.put("/user/update/lose/:id", controller.api.add_lose);
+router.put("/user/update/score/:id", controller.api.add_score);
+
 // API Router
 router.get("/api/v2/whoami", restrict, controller.api.whoami);
 router.get("/api/v2/rooms", tokenCheck, controller.api.all_room);

@@ -50,6 +50,7 @@ class Rules {
     this.resultText = document.createElement("H1");
     this.resultContainer = document.getElementById("vs_result");
     this.gamesResult = "Not decided yet!";
+    this.matchResult = [];
   }
 
   logger = (text) => {
@@ -69,9 +70,9 @@ class Rules {
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "PLAYER WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.gamesResult = `${username} Win`;
-    this.logger(`Result : ${username} Win, great ! :)`);
-    return this.gamesResult;
+    this.gamesResult = `${username} win`;
+    this.logger(`Result : ${username} win, great ! :)`);
+    this.matchResult.push("P1");
   };
 
   _playerTwoWin = ({ username }) => {
@@ -79,9 +80,9 @@ class Rules {
     this.resultContainer.classList.add("versus_result");
     this.resultText.innerHTML = "COM WIN";
     this.resultContainer.appendChild(this.resultText);
-    this.gamesResult = `${username} Win`;
-    this.logger(`Result : ${username} Win, awesome ! :)`);
-    return this.gamesResult;
+    this.gamesResult = `${username} win`;
+    this.logger(`Result : ${username} win, awesome ! :)`);
+    this.matchResult.push("P2");
   };
 
   _drawResult = () => {
@@ -91,7 +92,7 @@ class Rules {
     this.resultContainer.appendChild(this.resultText);
     this.gamesResult = `Draw`;
     this.logger("Result : Draw, GG !");
-    return this.gamesResult;
+    this.matchResult.push("X");
   };
 
   decision = (playerOne, playerTwo) => {
@@ -108,28 +109,30 @@ class Rules {
       (p1_kertas && p2_kertas) ||
       (p1_gunting && p2_gunting)
     ) {
-      return this._drawResult();
+      this._drawResult();
     } else if (
       (p1_batu && p2_gunting) ||
       (p1_kertas && p2_batu) ||
       (p1_gunting && p2_kertas)
     ) {
-      return this._playerOneWin(playerOne.data);
+      this._playerOneWin(playerOne.data);
     } else if (
       (p1_batu && p2_kertas) ||
       (p1_kertas && p2_gunting) ||
       (p1_gunting && p2_batu)
     ) {
-      return this._playerTwoWin(playerTwo.data);
+      this._playerTwoWin(playerTwo.data);
     }
   };
 }
 
 class Game extends Rules {
-  constructor(gamesResult) {
-    super(gamesResult);
+  constructor(gamesResult, matchResult) {
+    super(gamesResult, matchResult);
     this.resetResult = document.getElementById("reset");
     this.id = document.querySelector("#game").dataset.id;
+    this.p1_winner = 1;
+    this.p2_winner = 0;
     this.#initiation();
   }
 
@@ -236,36 +239,48 @@ class Game extends Rules {
 
   resetButton() {
     this.resetResult.onclick = () => {
-      this.logger("Game restarted !");
-      this._defaultState();
-      document.querySelectorAll(".choice").forEach((userButton) => {
-        userButton.classList.remove("active_choice");
-        userButton.disabled = false;
-      });
+      if (this.matchResult.length != 5) {
+        this.logger("Game restarted !");
+        this._defaultState();
+        document.querySelectorAll(".choice").forEach((userButton) => {
+          userButton.classList.remove("active_choice");
+          userButton.disabled = false;
+        });
+      } else {
+        logger("Match Ended");
+      }
     };
   }
 
   play() {
-    this.logger("Lets play traditional games!");
-    this.setPlayerOneListener();
+    if (this.matchResult.length != 5) {
+      this.logger("Lets play traditional games!");
+      this.setPlayerOneListener();
+    } else {
+      logger("Match Ended");
+      this.resetResult.setAttribute("disabled", "true");
+    }
   }
 
-  sendData() {
+  sendData(result) {
     const { id: id_1, username: username_1 } = this.p1.data;
     const { id: id_2, username: username_2 } = this.p2.data;
-    2;
+
     sendReq("PUT", gameHistory(this.id), {
       player_one: username_1,
       player_two: username_2,
-      result: this.gamesResult,
+      winner: this.gamesResult,
+      result: this.matchResult,
       times: times.now(),
     });
 
-    sendReq("PUT", updateWin(id_1));
-    sendReq("PUT", updateLose(id_1));
-
-    // sendReq("PUT", updateWin(id_2));
-    // sendReq("PUT", updateLose(id_2));
+    if (result == `${username_1} win`) {
+      sendReq("PUT", updateWin(id_1));
+      // sendReq("PUT", updateLose(id_2));
+    } else {
+      sendReq("PUT", updateLose(id_1));
+      // sendReq("PUT", updateWin(id_2));
+    }
   }
 
   result = () => {
@@ -273,10 +288,13 @@ class Game extends Rules {
       if (this.p1 && this.p2) {
         this.decision(this.p1, this.p2);
       }
+
+      if (this.matchResult.length == 5) {
+        this.sendData(this.gamesResult);
+      }
+
       this.p1.choice = null;
       this.p2.choice = null;
-
-      this.sendData();
     }, 400);
   };
 }

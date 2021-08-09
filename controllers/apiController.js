@@ -264,14 +264,46 @@ module.exports = {
       );
   },
 
-  // result: async (req, res) =>
-  //   await Game.update(
-  //     {
-  //       player_one: req.body.player_one,
-  //       player_two: req.body.player_two,
-  //       result: req.body.result,
-  //       times: req.body.times,
-  //     },
-  //     { where: { id: req.params.id } }
-  //   ).then((game) => res.status(200).send(game)),
+  play: (req, res, next) => {
+    const choice_1 = req.body.choice_1;
+    const choice_2 = req.body.choice_2;
+  },
+
+  turns: async (req, res, next) => {
+    const currentPlayer = req.body.username;
+    const currentRoom = await Game.findOne({ where: { room: req.body.room } });
+
+    if (currentPlayer == currentRoom.player_one) {
+      return res.send({
+        code: 200,
+        message: "Player One Turns",
+        turns: currentRoom.player_one,
+      });
+    }
+
+    if (currentPlayer == currentRoom.player_two) {
+      return res.send({
+        code: 200,
+        message: "Player Two Turns",
+        turns: currentRoom.player_two,
+      });
+    }
+  },
+
+  result: async (req, res) =>
+    await Game.update(
+      {
+        player_one: req.body.player_one,
+        player_two: req.body.player_two,
+        winner: req.body.winner,
+        result: req.body.result,
+        times: req.body.times,
+      },
+      { where: { id: req.params.id } }
+    ).then((game) =>
+      res.status(200).send({
+        code: 200,
+        message: "Rooms updated!",
+      })
+    ),
 };
