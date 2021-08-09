@@ -247,17 +247,22 @@ class Game extends Rules {
           userButton.disabled = false;
         });
       } else {
-        logger("Match Ended");
+        logger("Room has been finished");
       }
     };
   }
 
   play() {
-    if (this.matchResult.length != 5) {
+    const roomMatch = document.querySelector("#game").dataset.match;
+    const matchArray = roomMatch.split(",");
+
+    if (matchArray.length != 5) {
       this.logger("Lets play traditional games!");
       this.setPlayerOneListener();
+      alert("Play for 5 rounds");
     } else {
-      logger("Match Ended");
+      this.resultContainer.innerText = "Finished";
+      alert("This room has been finished");
       this.resetResult.setAttribute("disabled", "true");
     }
   }
