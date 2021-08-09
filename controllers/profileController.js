@@ -1,4 +1,8 @@
-const { User_game, User_game_biodata } = require("../models");
+const {
+  User_game,
+  User_game_biodata,
+  User_game_history,
+} = require("../models");
 
 module.exports = {
   index: async (req, res) => {
@@ -8,21 +12,24 @@ module.exports = {
       where: {
         username: username,
       },
-    }).then((result) => {
-      result
-        ? User_game_biodata.findOne({
-            where: {
-              user_id: result.get("id"),
-            },
-          }).then((user) =>
-            res.status(200).render("profile", {
-              title: "My Profile",
-              user,
-              msg: msg,
-              username: username,
-              style: "dashboard",
-            })
-          )
+      include: [
+        {
+          model: User_game_biodata,
+        },
+        {
+          model: User_game_history,
+        },
+      ],
+    }).then((user) => {
+      user
+        ? res.status(200).render("profile", {
+            title: "My Profile",
+            user: user.User_game_biodata[0],
+            history: user.User_game_histories[0],
+            msg: msg,
+            username: username,
+            style: "dashboard",
+          })
         : res.status(200).redirect("/");
     });
   },
