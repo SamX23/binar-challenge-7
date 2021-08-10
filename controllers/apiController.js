@@ -81,9 +81,12 @@ module.exports = {
       .catch(() => res.status(422).send("Cannot delete the user id")),
 
   add_win: async (req, res) =>
-    await User_game_history.increment("win", {
-      where: { user_id: req.params.id },
-    }).then((user) =>
+    await User_game_history.update(
+      { win: req.body.win },
+      {
+        where: { user_id: req.params.id },
+      }
+    ).then((user) =>
       res.send({
         code: 200,
         message: "User win data has been updated",
@@ -91,9 +94,12 @@ module.exports = {
     ),
 
   add_lose: async (req, res) =>
-    await User_game_history.increment("lose", {
-      where: { user_id: req.params.id },
-    }).then((user) =>
+    await User_game_history.update(
+      { lose: req.body.lose },
+      {
+        where: { user_id: req.params.id },
+      }
+    ).then((user) =>
       res.send({
         code: 200,
         message: "User lose data has been updated",
@@ -101,9 +107,12 @@ module.exports = {
     ),
 
   add_score: async (req, res) =>
-    await User_game_history.increment("score", {
-      where: { user_id: req.params.id },
-    }).then((user) =>
+    await User_game_history.update(
+      { score: req.body.score },
+      {
+        where: { user_id: req.params.id },
+      }
+    ).then((user) =>
       res.send({
         code: 200,
         message: "User score data has been updated",
@@ -250,41 +259,43 @@ module.exports = {
 
   play: async (req, res, next) => {
     const room = req.params.room;
-    const user = req.body.player;
-    const game = await Game.findOne({ where: { room: room } });
-    const choice_1 = req.body.choice_1;
-    const choice_2 = req.body.choice_2;
-
-    res.send(this.turns(user, room));
-  },
-
-  turns: async (username, room) => {
-    const currentPlayer = username;
     const currentRoom = await Game.findOne({ where: { room: room } });
+    const player = req.body.player;
 
-    if (currentPlayer == currentRoom.player_one) {
-      return "Player One Turns";
+    if (currentRoom == 0 || currentRoom == null) {
+      res.status(400).send({
+        code: 400,
+        status: "error",
+        message: "Room not found",
+      });
     }
 
-    if (currentPlayer == currentRoom.player_two) {
-      return "Player Two Turns";
+    const currentPlayer = (player) => {
+      if (player == currentRoom.player_one) {
+        return "Player One";
+      } else if (player == currentRoom.player_two) {
+        return "Player Two";
+      } else {
+        return res.status(400).send({
+          code: 400,
+          status: "error",
+          message: "Not a room player",
+        });
+      }
+    };
+
+    if (currentRoom.result.every((round) => round != "")) {
+      res.send("Room sudah selesai");
+    } else {
+      if (currentPlayer(player) == "Player One") {
+        res.send({
+          message: `${player} picks`,
+        });
+      } else if (currentPlayer(player) == "Player Two") {
+        res.send({
+          message: `${player} picks`,
+        });
+      }
     }
   },
-
-  result: async (req, res) =>
-    await Game.update(
-      {
-        player_one: req.body.player_one,
-        player_two: req.body.player_two,
-        winner: req.body.winner,
-        result: req.body.result,
-        times: req.body.times,
-      },
-      { where: { id: req.params.id } }
-    ).then((game) =>
-      res.status(200).send({
-        code: 200,
-        message: "Rooms updated!",
-      })
-    ),
 };
