@@ -80,45 +80,6 @@ module.exports = {
       )
       .catch(() => res.status(422).send("Cannot delete the user id")),
 
-  add_win: async (req, res) =>
-    await User_game_history.update(
-      { win: req.body.win },
-      {
-        where: { user_id: req.params.id },
-      }
-    ).then((user) =>
-      res.send({
-        code: 200,
-        message: "User win data has been updated",
-      })
-    ),
-
-  add_lose: async (req, res) =>
-    await User_game_history.update(
-      { lose: req.body.lose },
-      {
-        where: { user_id: req.params.id },
-      }
-    ).then((user) =>
-      res.send({
-        code: 200,
-        message: "User lose data has been updated",
-      })
-    ),
-
-  add_score: async (req, res) =>
-    await User_game_history.update(
-      { score: req.body.score },
-      {
-        where: { user_id: req.params.id },
-      }
-    ).then((user) =>
-      res.send({
-        code: 200,
-        message: "User score data has been updated",
-      })
-    ),
-
   login: async (req, res) => {
     if (req.user) {
       res.send({
@@ -166,6 +127,27 @@ module.exports = {
 
   whoami: async (req, res) => await res.json(req.user),
 
+  all_room: async (req, res) =>
+    await Game.findAll({
+      order: [["id", "ASC"]],
+    }).then((game) => res.status(200).send(game)),
+
+  room: async (req, res, next) => {
+    await Game.findOne({
+      where: {
+        room: req.params.room,
+      },
+    }).then((game) => {
+      game
+        ? res.send(game)
+        : res.status(400).send({
+            code: 400,
+            status: "error",
+            message: "Room not found",
+          });
+    });
+  },
+
   create_room: async (req, res) =>
     await User_game.findOne({ where: { username: req.body.username } })
       .then(
@@ -196,27 +178,6 @@ module.exports = {
           message: "Username not found",
         })
       ),
-
-  all_room: async (req, res) =>
-    await Game.findAll({
-      order: [["id", "ASC"]],
-    }).then((game) => res.status(200).send(game)),
-
-  room: async (req, res, next) => {
-    await Game.findOne({
-      where: {
-        room: req.params.room,
-      },
-    }).then((game) => {
-      game
-        ? res.send(game)
-        : res.status(400).send({
-            code: 400,
-            status: "error",
-            message: "Room not found",
-          });
-    });
-  },
 
   join: async (req, res, next) => {
     const roomId = req.params.room;
@@ -261,6 +222,7 @@ module.exports = {
     const room = req.params.room;
     const currentRoom = await Game.findOne({ where: { room: room } });
     const player = req.body.player;
+    const choice = req.body.choice;
 
     if (currentRoom == 0 || currentRoom == null) {
       res.status(400).send({
@@ -297,5 +259,24 @@ module.exports = {
         });
       }
     }
+  },
+
+  result: async (req, res) => {
+    await Game.findOne({ where: { room: req.params.room } })
+      .then((game) => {
+        if (game == 0 || game == null) {
+          res.status(400).send({
+            code: 400,
+            status: "error",
+            message: "Room not found",
+          });
+        } else {
+          res.status(200).send({
+            code: 200,
+            message: `The result is ${game.winner}`,
+          });
+        }
+      })
+      .catch((err) => res.send(err));
   },
 };

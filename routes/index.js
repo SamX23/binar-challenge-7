@@ -37,27 +37,23 @@ router.get("/room-list", redirect, controller.roomList.index);
 router.get("/room/:room", redirect, controller.games.index);
 
 // API Router
-router.get("/api/v2/whoami", restrict, controller.api.whoami);
-router.get("/api/v2/rooms", tokenCheck, controller.api.all_room);
-router.get("/api/v2/room/:room", tokenCheck, controller.api.room);
+// Table Room
+router.get("/api/v2/rooms", adminOnly, controller.api.all_room);
+router.get("/api/v2/room/:room", adminOnly, controller.api.room);
 
+// Table User
 router.get("/api/v2/users", adminOnly, controller.api.all_user);
 router.get("/api/v2/user/:id", adminOnly, controller.api.user);
 router.put("/api/v2/user/edit/:id", adminOnly, controller.api.update_user);
 router.delete("/api/v2/user/delete/:id", adminOnly, controller.api.delete_user);
 
-router.put("/api/v2/user/update/win/:id", adminOnly, controller.api.add_win);
-router.put("/api/v2/user/update/lose/:id", adminOnly, controller.api.add_lose);
-router.put(
-  "/api/v2/user/update/score/:id",
-  adminOnly,
-  controller.api.add_score
-);
-
+// Games
 router.post("/api/v2/auth/register", controller.api.register);
+router.get("/api/v2/whoami", restrict, controller.api.whoami);
 router.post("/api/v2/auth/login", loginToken, controller.api.login);
 router.post("/api/v2/room/create", tokenCheck, controller.api.create_room);
 router.post("/api/v2/room/:room/join", tokenCheck, controller.api.join);
 router.post("/api/v2/room/:room/play", tokenCheck, controller.api.play);
+router.get("/api/v2/room/:room/result", tokenCheck, controller.api.result);
 
 module.exports = router;
