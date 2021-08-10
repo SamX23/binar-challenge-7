@@ -211,82 +211,63 @@ module.exports = {
 
   join: async (req, res, next) => {
     const roomId = req.params.room;
-    let player = null;
-    await User_game.findOne({ where: { username: req.body.username } })
-      .then((user) => {
-        if (user) {
-          player = user;
-        } else {
-          res.status(400).send({
-            code: 400,
-            status: "error",
-            message: "User not found",
-          });
-        }
-      })
-      .catch((err) =>
-        res.status(400).send({
-          code: 400,
-          status: "error",
-          message: "Username not found",
-        })
-      );
+    const player = await User_game.findOne({
+      where: { username: req.body.username },
+    });
 
-    await Game.findOne({
-      where: {
-        room: roomId,
-      },
-    })
-      .then((room) => {
-        if (player) {
-          if (room.player_two == "") {
-            Game.update(
-              {
-                player_two: player.username,
-              },
-              { where: { room: roomId } }
-            ).then(() => res.send(room));
-          } else {
-            res.status(200).send({
-              code: 200,
-              status: "error",
-              message: "Room is already full.",
-            });
-          }
-        }
-      })
-      .catch((err) =>
-        res.status(400).send({
+    if (player) {
+      const room = await Game.findOne({ where: { room: roomId } });
+      if (
+        room.player_one == player.username ||
+        room.player_two == player.username
+      ) {
+        res.send({
           code: 400,
           status: "error",
-          message: "Username not found",
-        })
-      );
+          message: `${player.username} already in the room.`,
+        });
+      } else {
+        await Game.update(
+          {
+            player_two: player.username,
+          },
+          { where: { room: roomId } }
+        ).then(() =>
+          res.send({
+            code: 200,
+            message: `${player.username} joined the room.`,
+          })
+        );
+      }
+    } else {
+      res.status(400).send({
+        code: 400,
+        status: "error",
+        message: "User not found",
+      });
+    }
   },
 
-  play: (req, res, next) => {
+  play: async (req, res, next) => {
+    const room = req.params.room;
+    const user = req.body.player;
+    const game = await Game.findOne({ where: { room: room } });
     const choice_1 = req.body.choice_1;
     const choice_2 = req.body.choice_2;
+
+    res.send(this.turns(user, room));
   },
 
-  turns: async (req, res, next) => {
-    const currentPlayer = req.body.username;
-    const currentRoom = await Game.findOne({ where: { room: req.body.room } });
+  turns: async (username, room) => {
+    const currentPlayer = username;
+    const currentRoom = await Game.findOne({ where: { room: room } });
 
     if (currentPlayer == currentRoom.player_one) {
-      return res.send({
-        code: 200,
-        message: "Player One Turns",
-        turns: currentRoom.player_one,
-      });
+      return "Player One Turns";
     }
 
     if (currentPlayer == currentRoom.player_two) {
-      return res.send({
-        code: 200,
-        message: "Player Two Turns",
-        turns: currentRoom.player_two,
-      });
+      return "Player Two Turns";
     }
   },
 

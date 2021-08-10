@@ -24,18 +24,18 @@ router.post("/dashboard/add", controller.dashboard.create);
 router.post("/dashboard/edit/:id", controller.dashboard.update);
 router.post("/dashboard/delete/:id", controller.dashboard.delete);
 
+// For games page
+router.put("/room/update/:id", controller.api.result);
+router.put("/user/update/win/:id", controller.api.add_win);
+router.put("/user/update/lose/:id", controller.api.add_lose);
+router.put("/user/update/score/:id", controller.api.add_score);
+
 // Protected page
 router.get("/dashboard", redirect, controller.dashboard.index);
 router.get("/dashboard/*", redirect, controller.dashboard.handler);
 router.get("/profile", redirect, controller.profileController.index);
 router.get("/room-list", redirect, controller.roomList.index);
 router.get("/room/:room", redirect, controller.games.index);
-
-// API for games page
-router.put("/room/update/:id", controller.api.result);
-router.put("/user/update/win/:id", controller.api.add_win);
-router.put("/user/update/lose/:id", controller.api.add_lose);
-router.put("/user/update/score/:id", controller.api.add_score);
 
 // API Router
 router.get("/api/v2/whoami", restrict, controller.api.whoami);
@@ -59,5 +59,6 @@ router.post("/api/v2/auth/register", controller.api.register);
 router.post("/api/v2/auth/login", loginToken, controller.api.login);
 router.post("/api/v2/room/create", tokenCheck, controller.api.create_room);
 router.post("/api/v2/room/:room/join", tokenCheck, controller.api.join);
+router.post("/api/v2/room/:room/play", tokenCheck, controller.api.play);
 
 module.exports = router;
