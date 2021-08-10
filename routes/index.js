@@ -18,17 +18,16 @@ router.get("/auth/logout", controller.auth.logout);
 router.post("/auth/login", controller.auth.login);
 router.post("/auth/register", controller.auth.register);
 
-router.post("/game/create", controller.games.create);
 router.post("/profile/update", controller.profileController.update);
 router.post("/dashboard/add", controller.dashboard.create);
 router.post("/dashboard/edit/:id", controller.dashboard.update);
 router.post("/dashboard/delete/:id", controller.dashboard.delete);
 
-// For games page
-router.put("/room/update/:id", controller.api.result);
-router.put("/user/update/win/:id", controller.api.add_win);
-router.put("/user/update/lose/:id", controller.api.add_lose);
-router.put("/user/update/score/:id", controller.api.add_score);
+router.post("/room/create", controller.games.create);
+router.put("/room/update/:id", controller.games.result);
+router.put("/user/update/win/:id", controller.games.add_win);
+router.put("/user/update/lose/:id", controller.games.add_lose);
+router.put("/user/update/score/:id", controller.games.add_score);
 
 // Protected page
 router.get("/dashboard", redirect, controller.dashboard.index);
