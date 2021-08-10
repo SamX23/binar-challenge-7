@@ -25,7 +25,7 @@ Make sure you have installed sequelize-cli
 
 API can be accessed from such endpoints, by using auth token. <strong>Generate your auth token from register or login using admin</strong>, check your token from /whoami
 
-#### API V2
+#### API
 
 - Get all users : GET <code>/api/v2/users</code>
 - Get all room : GET <code>/api/v2/rooms</code>
@@ -41,6 +41,8 @@ API can be accessed from such endpoints, by using auth token. <strong>Generate y
 - Check your token : GET <code>api/v2/whoami</code>
 
 ##### GAMES
+
+Player one always created by current logged username, another user can only join as a player two.
 
 - Create a room : POST <code>/api/v2/room/create</code>
 - Join room : POST <code>/api/v2/room/:room/join</code>
