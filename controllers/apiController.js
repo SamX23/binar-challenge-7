@@ -224,13 +224,13 @@ module.exports = {
     const player = req.body.player;
     const choice = req.body.choice;
 
-    if (currentRoom == 0 || currentRoom == null) {
-      res.status(400).send({
-        code: 400,
-        status: "error",
-        message: "Room not found",
-      });
-    }
+    currentRoom == 0 ||
+      (currentRoom == null &&
+        res.status(400).send({
+          code: 400,
+          status: "error",
+          message: "Room not found",
+        }));
 
     const currentPlayer = (player) => {
       if (player == currentRoom.player_one) {
@@ -246,19 +246,40 @@ module.exports = {
       }
     };
 
+    !choice &&
+      res.send({
+        code: 400,
+        message: "Please add choice to the body.",
+      });
+
     if (currentRoom.result.every((round) => round != "")) {
       res.send("Room sudah selesai");
     } else {
       if (currentPlayer(player) == "Player One") {
-        res.send({
-          message: `${player} picks`,
+        currentRoom.result.map((round) => {
+          if (round == "") {
+            round = choice;
+          }
         });
       } else if (currentPlayer(player) == "Player Two") {
-        res.send({
-          message: `${player} picks`,
+        currentRoom.result.map((round) => {
+          if (round == "") {
+            round = choice;
+          }
         });
       }
     }
+
+    await Game.update(
+      { result: currentRoom.result },
+      { where: { room: room } }
+    ).then(() =>
+      res.send({
+        code: 200,
+        message: "Room updated",
+        result: currentRoom.result,
+      })
+    );
   },
 
   result: async (req, res) => {
