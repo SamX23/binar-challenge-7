@@ -239,7 +239,7 @@ class Game extends Rules {
 
   resetButton() {
     this.resetResult.onclick = () => {
-      if (this.matchResult.length != 5) {
+      if (this.matchResult.length != 6) {
         this.logger("Game restarted !");
         this._defaultState();
         document.querySelectorAll(".choice").forEach((userButton) => {
@@ -256,10 +256,10 @@ class Game extends Rules {
     const roomMatch = document.querySelector("#game").dataset.match;
     const matchArray = roomMatch.split(",");
 
-    if (matchArray.length != 5) {
+    if (matchArray.length != 6) {
       this.logger("Lets play traditional games!");
       this.setPlayerOneListener();
-      alert("Play for 5 rounds");
+      alert("Play for 6 rounds");
     } else {
       this.resultContainer.innerText = "Finished";
       alert("This room has been finished");
@@ -294,7 +294,7 @@ class Game extends Rules {
         this.decision(this.p1, this.p2);
       }
 
-      if (this.matchResult.length == 5) {
+      if (this.matchResult.length == 6) {
         this.sendData(this.gamesResult);
       }
 

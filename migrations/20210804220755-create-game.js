@@ -31,7 +31,7 @@ module.exports = {
       },
       result: {
         type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue: ["", "", "", "", ""],
+        defaultValue: ["", "", "", "", "", ""],
       },
       createdAt: {
         allowNull: false,
