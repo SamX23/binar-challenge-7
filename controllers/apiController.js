@@ -65,7 +65,6 @@ module.exports = {
         );
 
         res.status(201).send({
-          code: 201,
           message: `Users id of ${req.params.id} has been updated!`,
         });
       })
@@ -98,9 +97,8 @@ module.exports = {
         )
         .catch((err) =>
           res.status(400).send({
-            code: 400,
             status: "error",
-            message: "Please insert your username and password",
+            message: "Please check your username and password",
           })
         );
     }
@@ -141,7 +139,6 @@ module.exports = {
       game
         ? res.send(game)
         : res.status(400).send({
-            code: 400,
             status: "error",
             message: "Room not found",
           });
@@ -165,7 +162,6 @@ module.exports = {
             )
             .catch((err) =>
               res.status(400).send({
-                code: 400,
                 status: "error",
                 message: "Room exist or invalid input",
               })
@@ -173,7 +169,6 @@ module.exports = {
       )
       .catch((err) =>
         res.status(400).send({
-          code: 400,
           status: "error",
           message: "Username not found",
         })
@@ -211,7 +206,6 @@ module.exports = {
       }
     } else {
       res.status(400).send({
-        code: 400,
         status: "error",
         message: "User not found",
       });
@@ -224,13 +218,12 @@ module.exports = {
     const player = req.body.player;
     const choice = req.body.choice;
 
-    currentRoom == 0 ||
-      (currentRoom == null &&
-        res.status(400).send({
-          code: 400,
-          status: "error",
-          message: "Room not found",
-        }));
+    if (currentRoom == 0 || currentRoom == null) {
+      res.status(400).send({
+        status: "error",
+        message: "Room not found",
+      });
+    }
 
     const currentPlayer = (player) => {
       if (player == currentRoom.player_one) {
@@ -239,34 +232,47 @@ module.exports = {
         return "Player Two";
       } else {
         return res.status(400).send({
-          code: 400,
           status: "error",
           message: "Not a room player",
         });
       }
     };
 
-    !choice &&
-      res.send({
-        code: 400,
+    if (!choice) {
+      res.status(400).send({
         message: "Please add choice to the body.",
       });
+    }
 
-    if (currentRoom.result.every((round) => round != "")) {
-      res.send("Room sudah selesai");
+    if (currentRoom.result.every((pick) => pick != "")) {
+      res.status(400).send({
+        message: "Room has been finished, please look at the result.",
+      });
     } else {
       if (currentPlayer(player) == "Player One") {
-        currentRoom.result.map((round) => {
-          if (round == "") {
-            round = choice;
+        for (let i = 0; i < currentRoom.result.length; i += 2) {
+          if (currentRoom.result[i] == "") {
+            currentRoom.result[i] = choice;
+            break;
+          } else {
+            res.status(400).send({
+              message: "Error",
+              result: "You have out of pick, please wait player 2",
+            });
           }
-        });
+        }
       } else if (currentPlayer(player) == "Player Two") {
-        currentRoom.result.map((round) => {
-          if (round == "") {
-            round = choice;
+        for (let i = 1; i < currentRoom.result.length; i += 2) {
+          if (currentRoom.result[i] == "") {
+            currentRoom.result[i] = choice;
+            break;
+          } else {
+            res.status(400).send({
+              status: "Error",
+              message: "You have out of pick, please wait player 2",
+            });
           }
-        });
+        }
       }
     }
 
@@ -274,8 +280,7 @@ module.exports = {
       { result: currentRoom.result },
       { where: { room: room } }
     ).then(() =>
-      res.send({
-        code: 200,
+      res.status(200).send({
         message: "Room updated",
         result: currentRoom.result,
       })
@@ -283,21 +288,67 @@ module.exports = {
   },
 
   result: async (req, res) => {
-    await Game.findOne({ where: { room: req.params.room } })
-      .then((game) => {
-        if (game == 0 || game == null) {
-          res.status(400).send({
-            code: 400,
-            status: "error",
-            message: "Room not found",
-          });
-        } else {
-          res.status(200).send({
-            code: 200,
-            message: `The result is ${game.winner}`,
-          });
-        }
-      })
-      .catch((err) => res.send(err));
+    const currentRoom = await Game.findOne({
+      where: { room: req.params.room },
+    });
+
+    currentRoom == 0 ||
+      (currentRoom == null &&
+        res.status(400).send({
+          status: "error",
+          message: "Room not found",
+        }));
+
+    const decide = (choices) => {
+      let pairs = choices.join("");
+
+      switch (pairs) {
+        case "RR":
+        case "PP":
+        case "SS":
+          return "Draw";
+        case "RS":
+        case "SP":
+        case "PR":
+          return "P1 Win";
+        case "SR":
+        case "PS":
+        case "RP":
+          return "P2 Win";
+        default:
+          return "Match Belum Selesai";
+      }
+    };
+
+    let result = "";
+
+    if (req.body.round) {
+      switch (req.body.round) {
+        case 1:
+          result = decide(currentRoom.result.slice(0, 2));
+          break;
+        case 2:
+          result = decide(currentRoom.result.slice(2, 4));
+          break;
+        case 3:
+          result = decide(currentRoom.result.slice(4, 6));
+          break;
+      }
+    } else {
+      res.status(400).send({
+        status: "error",
+        message: "Select round",
+      });
+    }
+
+    if (result != "") {
+      res.status(200).send({
+        message: `The result is ${game.winner}`,
+      });
+    } else {
+      res.json({
+        message: result,
+      });
+    }
   },
 };
