@@ -217,6 +217,20 @@ module.exports = {
     const currentRoom = await Game.findOne({ where: { room: room } });
     const player = req.body.player;
     const choice = req.body.choice;
+    const choiceWords = ["p", "P", "r", "R", "s", "S"];
+
+    if (!choice) {
+      res.status(400).send({
+        message: "Please add choice to the body.",
+      });
+    }
+
+    if (!choiceWords.includes(choice)) {
+      res.status(400).send({
+        message:
+          "Please add a choice of P as Papers, R as Rocks, and S as Scrissors.",
+      });
+    }
 
     if (currentRoom == 0 || currentRoom == null) {
       res.status(400).send({
@@ -237,12 +251,6 @@ module.exports = {
         });
       }
     };
-
-    if (!choice) {
-      res.status(400).send({
-        message: "Please add choice to the body.",
-      });
-    }
 
     if (currentRoom.result.every((pick) => pick != "")) {
       res.status(400).send({
@@ -310,11 +318,11 @@ module.exports = {
         case "RS":
         case "SP":
         case "PR":
-          return "P1 Win";
+          return "Player One Win";
         case "SR":
         case "PS":
         case "RP":
-          return "P2 Win";
+          return "Player Two Win";
         default:
           return "Match Belum Selesai";
       }
@@ -325,29 +333,33 @@ module.exports = {
     if (req.body.round) {
       switch (req.body.round) {
         case 1:
+        case "1":
           result = decide(currentRoom.result.slice(0, 2));
           break;
         case 2:
+        case "2":
           result = decide(currentRoom.result.slice(2, 4));
           break;
         case 3:
+        case "3":
           result = decide(currentRoom.result.slice(4, 6));
           break;
       }
     } else {
       res.status(400).send({
         status: "error",
-        message: "Select round",
+        message: "Insert a round of 3 to see the result.",
       });
     }
 
     if (result != "") {
       res.status(200).send({
-        message: `The result is ${game.winner}`,
+        message: `${result} at round ${req.body.round}`,
       });
     } else {
-      res.json({
-        message: result,
+      res.status(400).send({
+        message: "Result not found, please insert round from 1, 2, and 3.",
+        result,
       });
     }
   },
